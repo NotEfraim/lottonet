@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_bloc.dart';
+import 'package:lottonet/blocs/login_with_password/login_password_bloc.dart';
 import 'package:lottonet/repositories/login_otp/check_login_code_repository.dart';
 import 'package:lottonet/repositories/login_otp/send_code_repository.dart';
+import 'package:lottonet/repositories/login_password/login_password_repository.dart';
 import 'package:lottonet/screens/login/login_layout.dart';
 import 'package:lottonet/screens/login/widget/background_image_screen.dart';
 
@@ -11,8 +13,16 @@ void main() {
     home: MultiBlocProvider(
         providers: [
           BlocProvider(
-              create: (context) => LoginOtpBloc(
-                  SendCodeRepository(), CheckLoginCodeRepository()))
+            create: (context) => LoginOtpBloc(
+              SendCodeRepository(),
+              CheckLoginCodeRepository(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => LoginPasswordBloc(
+              LoginPasswordRepository(),
+            ),
+          )
         ],
         child: const Stack(
           children: [BackgroundImageScreen(), LoginLayout()],

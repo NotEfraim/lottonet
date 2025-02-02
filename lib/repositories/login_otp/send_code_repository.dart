@@ -1,5 +1,5 @@
-import 'package:lottonet/models/send_code/send_code_param.dart';
-import 'package:lottonet/models/send_code/send_code_response.dart';
+import 'package:lottonet/models/login_otp/send_code/send_code_param.dart';
+import 'package:lottonet/models/login_otp/send_code/send_code_response.dart';
 import 'package:lottonet/services/dio_interceptor.dart';
 import 'package:lottonet/services/rest_client.dart';
 

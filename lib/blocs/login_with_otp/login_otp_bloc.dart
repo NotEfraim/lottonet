@@ -22,7 +22,7 @@ class LoginOtpBloc extends Bloc<BaseEvent, LoginOtpState> {
               isLoading: false, isSendCodeSuccess: response.result == 0));
         } catch (e) {
           HttpLogger("HTTP", e.toString());
-          emit(state.copyWith(errorMsg: e.toString()));
+          emit(state.copyWith(isLoading: false, errorMsg: e.toString()));
         }
       },
     );
@@ -38,7 +38,7 @@ class LoginOtpBloc extends Bloc<BaseEvent, LoginOtpState> {
           HttpLogger("HTTP", "Success ${response.toJson()}");
         } catch (e) {
           HttpLogger("HTTP", e.toString());
-          emit(state.copyWith(errorMsg: e.toString()));
+          emit(state.copyWith(isLoading: false, errorMsg: e.toString()));
         }
       },
     );

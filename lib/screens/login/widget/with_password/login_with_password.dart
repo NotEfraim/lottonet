@@ -3,7 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_bloc.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_event.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_state.dart';
-import 'package:lottonet/models/send_code/send_code_param.dart';
+import 'package:lottonet/blocs/login_with_password/login_password_bloc.dart';
+import 'package:lottonet/blocs/login_with_password/login_password_event.dart';
+import 'package:lottonet/blocs/login_with_password/login_password_state.dart';
+import 'package:lottonet/models/login_otp/send_code/send_code_param.dart';
+import 'package:lottonet/models/login_password/login_password_param.dart';
 import 'package:lottonet/screens/login/widget/rounded_text_field.dart';
 
 class LoginWithPassword extends StatefulWidget {
@@ -19,13 +23,13 @@ class LoginWithPassword extends StatefulWidget {
 
 class _LoginWithPasswordState extends State<LoginWithPassword> {
   bool showCodeTextField = false;
-  String identificationNumber = "";
-  String phoneNumber = "";
+  String custId = "";
+  String mobile = "";
   String password = "";
 
   @override
   Widget build(BuildContext context) {
-    final loginOTPBloc = context.read<LoginOtpBloc>();
+    final loginPasswordBloc = context.read<LoginPasswordBloc>();
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -36,7 +40,7 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
             child: Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: 10.0), // Add padding for better spacing
-              child: BlocBuilder<LoginOtpBloc, LoginOtpState>(
+              child: BlocBuilder<LoginPasswordBloc, LoginPasswordState>(
                   builder: (context, state) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -49,20 +53,9 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
                         "תעודת זהות",
                         false,
                         onTextChange: (it) {
-                          identificationNumber = it;
+                          custId = it;
                         },
                       ), //Identity card
-                    ),
-                    SizedBox(
-                      height: widget.textFieldheight,
-                      width: widget.textFieldwidth,
-                      child: RoundedTextField(
-                        "סיסמא",
-                        false,
-                        onTextChange: (it) {
-                          phoneNumber = it;
-                        },
-                      ), // Mobile Number
                     ),
                     SizedBox(
                       height: widget.textFieldheight,
@@ -94,10 +87,12 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {
-                          loginOTPBloc.add(LoginOtpEvent(SendCodeParam(
-                              uniqe_id: "ffc22d20-d7db-11ef-97aa-5b10ceba786f",
-                              mobile: "92763527382",
-                              custId: "999999999")));
+                          loginPasswordBloc.add(LoginPasswordEvent(
+                              LoginPasswordParam(
+                                  custId: custId,
+                                  password: password,
+                                  uniqe_id:
+                                      "ffc22d20-d7db-11ef-97aa-5b10ceba786f")));
                         },
                       ),
                     ),

@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:lottonet/models/check_login_code/check_login_code_param.dart';
-import 'package:lottonet/models/check_login_code/check_login_code_response.dart';
-import 'package:lottonet/models/send_code/send_code_param.dart';
-import 'package:lottonet/models/send_code/send_code_response.dart';
+import 'package:lottonet/models/login_otp/check_login_code/check_login_code_param.dart';
+import 'package:lottonet/models/login_otp/check_login_code/check_login_code_response.dart';
+import 'package:lottonet/models/login_otp/send_code/send_code_param.dart';
+import 'package:lottonet/models/login_otp/send_code/send_code_response.dart';
+import 'package:lottonet/models/login_password/login_password_param.dart';
+import 'package:lottonet/models/login_password/login_password_response.dart';
 import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/http.dart';
 
@@ -18,4 +20,8 @@ abstract class RestClient {
   @POST("/checkLoginCode")
   Future<CheckLoginCodeResponse> checkLoginOTP(
       @Body() CheckLoginCodeParam param);
+
+  @POST("/loginWithPassword")
+  Future<LoginPasswordResponse> loginWithPassword(
+      @Body() LoginPasswordParam param);
 }

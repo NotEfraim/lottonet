@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_bloc.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_event.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_state.dart';
-import 'package:lottonet/models/check_login_code/check_login_code_param.dart';
-import 'package:lottonet/models/send_code/send_code_param.dart';
+import 'package:lottonet/models/login_otp/check_login_code/check_login_code_param.dart';
+import 'package:lottonet/models/login_otp/send_code/send_code_param.dart';
 import 'package:lottonet/screens/login/widget/rounded_text_field.dart';
 
 class LoginWithOtp extends StatefulWidget {

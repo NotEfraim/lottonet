@@ -8,14 +8,14 @@ part of 'send_code_param.dart';
 
 SendCodeParam _$SendCodeParamFromJson(Map<String, dynamic> json) =>
     SendCodeParam(
-      json['uniqe_id'] as String,
-      mobileNumber: json['mobileNumber'] as String,
+      uniqe_id: json['uniqe_id'] as String,
+      mobile: json['mobile'] as String,
       custId: json['custId'] as String,
     );
 
 Map<String, dynamic> _$SendCodeParamToJson(SendCodeParam instance) =>
     <String, dynamic>{
       'uniqe_id': instance.uniqe_id,
-      'mobileNumber': instance.mobileNumber,
+      'mobile': instance.mobile,
       'custId': instance.custId,
     };

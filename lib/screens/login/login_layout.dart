@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottonet/screens/login/widget/with_otp/login_with_otp.dart';
 import 'package:lottonet/screens/login/widget/with_password/login_with_password.dart';
 import 'package:lottonet/utils/constants.dart';
 
@@ -123,7 +124,7 @@ class _LoginLayoutState extends State<LoginLayout>
                               child: TabBarView(
                                 controller: _tabController,
                                 children: [
-                                  LoginWithPassword(
+                                  LoginWithOtp(
                                       textFieldheight: baseSize.height * .1,
                                       textFieldwidth: baseSize.width * .8),
                                   LoginWithPassword(

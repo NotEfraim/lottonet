@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_bloc.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_event.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_state.dart';
@@ -20,6 +19,9 @@ class LoginWithPassword extends StatefulWidget {
 
 class _LoginWithPasswordState extends State<LoginWithPassword> {
   bool showCodeTextField = false;
+  String identificationNumber = "";
+  String phoneNumber = "";
+  String password = "";
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +45,36 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
                     SizedBox(
                       height: widget.textFieldheight,
                       width: widget.textFieldwidth,
-                      child: const RoundedTextField("מספר טלפון", false),
+                      child: RoundedTextField(
+                        "תעודת זהות",
+                        false,
+                        onTextChange: (it) {
+                          identificationNumber = it;
+                        },
+                      ), //Identity card
                     ),
-                    if (state.code != -1)
-                      SizedBox(
-                        height: widget.textFieldheight,
-                        width: widget.textFieldwidth,
-                        child: const RoundedTextField("סִיסמָה", false),
-                      ),
+                    SizedBox(
+                      height: widget.textFieldheight,
+                      width: widget.textFieldwidth,
+                      child: RoundedTextField(
+                        "סיסמא",
+                        false,
+                        onTextChange: (it) {
+                          phoneNumber = it;
+                        },
+                      ), // Mobile Number
+                    ),
+                    SizedBox(
+                      height: widget.textFieldheight,
+                      width: widget.textFieldwidth,
+                      child: RoundedTextField(
+                        "טלפו",
+                        false,
+                        onTextChange: (it) {
+                          password = it;
+                        },
+                      ), // Password
+                    ),
                     SizedBox(
                       width: widget.textFieldwidth - 20,
                       child: const Text(
@@ -71,8 +95,8 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
                         ),
                         onPressed: () {
                           loginOTPBloc.add(LoginOtpEvent(SendCodeParam(
-                              "ffc22d20-d7db-11ef-97aa-5b10ceba786f",
-                              mobileNumber: "92763527382",
+                              uniqe_id: "ffc22d20-d7db-11ef-97aa-5b10ceba786f",
+                              mobile: "92763527382",
                               custId: "999999999")));
                         },
                       ),

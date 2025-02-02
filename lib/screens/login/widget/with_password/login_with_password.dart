@@ -69,7 +69,7 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
                       width: widget.textFieldwidth,
                       child: RoundedTextField(
                         "טלפו",
-                        false,
+                        true,
                         onTextChange: (it) {
                           password = it;
                         },

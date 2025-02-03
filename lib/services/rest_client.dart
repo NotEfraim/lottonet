@@ -5,6 +5,8 @@ import 'package:lottonet/models/login_otp/send_code/send_code_param.dart';
 import 'package:lottonet/models/login_otp/send_code/send_code_response.dart';
 import 'package:lottonet/models/login_password/login_password_param.dart';
 import 'package:lottonet/models/login_password/login_password_response.dart';
+import 'package:lottonet/models/register/register_user_param.dart';
+import 'package:lottonet/models/register/register_user_response.dart';
 import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/http.dart';
 
@@ -24,4 +26,7 @@ abstract class RestClient {
   @POST("/loginWithPassword")
   Future<LoginPasswordResponse> loginWithPassword(
       @Body() LoginPasswordParam param);
+
+  @POST("/createCustomer")
+  Future<RegisterUserResponse> createUser(@Body() RegisterUserParam param);
 }

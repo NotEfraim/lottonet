@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lottonet/blocs/login_with_otp/login_otp_bloc.dart';
-import 'package:lottonet/blocs/login_with_otp/login_otp_event.dart';
-import 'package:lottonet/blocs/login_with_otp/login_otp_state.dart';
 import 'package:lottonet/blocs/login_with_password/login_password_bloc.dart';
 import 'package:lottonet/blocs/login_with_password/login_password_event.dart';
 import 'package:lottonet/blocs/login_with_password/login_password_state.dart';
-import 'package:lottonet/models/login_otp/send_code/send_code_param.dart';
 import 'package:lottonet/models/login_password/login_password_param.dart';
 import 'package:lottonet/screens/login/widget/rounded_text_field.dart';
-import 'package:lottonet/screens/register/register_layout.dart';
+import 'package:lottonet/utils/constants.dart';
 import 'package:lottonet/utils/navigation_ext.dart';
 import 'package:lottonet/utils/routes.dart';
 
@@ -94,8 +90,7 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
                               LoginPasswordParam(
                                   custId: custId,
                                   password: password,
-                                  uniqe_id:
-                                      "ffc22d20-d7db-11ef-97aa-5b10ceba786f")));
+                                  uniqe_id: Constants.uniqueId)));
                         },
                       ),
                     ),

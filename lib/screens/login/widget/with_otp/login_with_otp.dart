@@ -6,7 +6,7 @@ import 'package:lottonet/blocs/login_with_otp/login_otp_state.dart';
 import 'package:lottonet/models/login_otp/check_login_code/check_login_code_param.dart';
 import 'package:lottonet/models/login_otp/send_code/send_code_param.dart';
 import 'package:lottonet/screens/login/widget/rounded_text_field.dart';
-import 'package:lottonet/screens/register/register_layout.dart';
+import 'package:lottonet/utils/constants.dart';
 import 'package:lottonet/utils/navigation_ext.dart';
 import 'package:lottonet/utils/routes.dart';
 
@@ -33,14 +33,10 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
     void buttonClickFunction(bool? isSendCodeSuccess) {
       if (isSendCodeSuccess == true) {
         loginOTPBloc.add(CheckLoginCodeEvent(CheckLoginCodeParam(
-            uniqe_id: "ffc22d20-d7db-11ef-97aa-5b10ceba786f",
-            mobile: mobile,
-            code: otp)));
+            uniqe_id: Constants.uniqueId, mobile: mobile, code: otp)));
       } else {
         loginOTPBloc.add(LoginOtpEvent(SendCodeParam(
-            uniqe_id: "ffc22d20-d7db-11ef-97aa-5b10ceba786f",
-            mobile: mobile,
-            custId: custId)));
+            uniqe_id: Constants.uniqueId, mobile: mobile, custId: custId)));
       }
     }
 

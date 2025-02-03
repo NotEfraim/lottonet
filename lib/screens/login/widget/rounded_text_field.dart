@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lottonet/utils/constants.dart';
 
 class RoundedTextField extends StatefulWidget {
   final String hintText;
   final bool obscureText;
+  final bool isError;
+  final bool isDigitOnly;
   final Function(String) onTextChange;
 
-  const RoundedTextField(this.hintText, this.obscureText,
-      {super.key, required this.onTextChange});
+  const RoundedTextField(this.hintText, this.obscureText, this.isError,
+      {super.key, required this.onTextChange, required this.isDigitOnly});
 
   @override
   State<StatefulWidget> createState() => _RoundedTextFieldState();
@@ -23,7 +26,13 @@ class _RoundedTextFieldState extends State<RoundedTextField> {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(30)),
+            border: Border.all(
+                color: widget.isError ? Colors.red : Colors.transparent,
+                width: 1),
+            color: widget.isError
+                ? const Color.fromARGB(255, 241, 223, 223)
+                : Colors.white,
+            borderRadius: BorderRadius.circular(30)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -31,6 +40,12 @@ class _RoundedTextFieldState extends State<RoundedTextField> {
             Expanded(
               flex: 8,
               child: TextField(
+                keyboardType: widget.isDigitOnly
+                    ? TextInputType.number
+                    : TextInputType.text,
+                inputFormatters: [
+                  if (widget.isDigitOnly) FilteringTextInputFormatter.digitsOnly
+                ],
                 onChanged: (value) => widget.onTextChange(value),
                 obscureText: isShow,
                 decoration: InputDecoration(

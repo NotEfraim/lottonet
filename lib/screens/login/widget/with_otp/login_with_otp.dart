@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_bloc.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_event.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_state.dart';
@@ -23,18 +26,40 @@ class LoginWithOtp extends StatefulWidget {
 
 class _LoginWithOtpState extends State<LoginWithOtp> {
   String custId = "";
+  bool custIdError = false;
   String mobile = "";
+  bool mobileError = false;
   String otp = "";
+  bool otpError = false;
 
   @override
   Widget build(BuildContext context) {
     final loginOTPBloc = context.read<LoginOtpBloc>();
 
     void buttonClickFunction(bool? isSendCodeSuccess) {
+      setState(() {
+        custIdError = custId.isEmpty;
+        mobileError = mobile.isEmpty;
+      });
+
       if (isSendCodeSuccess == true) {
+        setState(() {
+          otpError = otp.isEmpty;
+        });
+
+        if (otpError) {
+          Fluttertoast.showToast(msg: "All Field is required!");
+          return;
+        }
+
         loginOTPBloc.add(CheckLoginCodeEvent(CheckLoginCodeParam(
             uniqe_id: Constants.uniqueId, mobile: mobile, code: otp)));
       } else {
+        if (custIdError || mobileError) {
+          Fluttertoast.showToast(msg: "All Field is required!");
+          return;
+        }
+
         loginOTPBloc.add(LoginOtpEvent(SendCodeParam(
             uniqe_id: Constants.uniqueId, mobile: mobile, custId: custId)));
       }
@@ -62,7 +87,14 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
                       child: RoundedTextField(
                         "תעודת זהות",
                         false,
+                        custIdError,
+                        isDigitOnly: true,
                         onTextChange: (it) {
+                          if (it.isNotEmpty && custIdError) {
+                            setState(() {
+                              custIdError = false;
+                            });
+                          }
                           custId = it;
                         },
                       ),
@@ -74,7 +106,14 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
                       child: RoundedTextField(
                         "טלפון",
                         false,
+                        mobileError,
+                        isDigitOnly: true,
                         onTextChange: (it) {
+                          if (it.isNotEmpty && mobileError) {
+                            setState(() {
+                              mobileError = false;
+                            });
+                          }
                           mobile = it;
                         },
                       ),
@@ -88,7 +127,14 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
                         child: RoundedTextField(
                           "קוד",
                           false,
+                          otpError,
+                          isDigitOnly: true,
                           onTextChange: (it) {
+                            if (it.isNotEmpty && otpError) {
+                              setState(() {
+                                otpError = false;
+                              });
+                            }
                             otp = it;
                           },
                         ),

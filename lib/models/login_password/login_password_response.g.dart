@@ -11,7 +11,7 @@ LoginPasswordResponse _$LoginPasswordResponseFromJson(
     LoginPasswordResponse(
       json['message'] as String?,
       (json['result'] as num).toInt(),
-      json['token'] as String,
+      json['token'] as String?,
     );
 
 Map<String, dynamic> _$LoginPasswordResponseToJson(

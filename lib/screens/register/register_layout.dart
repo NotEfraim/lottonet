@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottonet/blocs/register/register_bloc.dart';
 import 'package:lottonet/blocs/register/register_event.dart';
 import 'package:lottonet/blocs/register/register_state.dart';
@@ -18,11 +19,17 @@ class RegisterLayout extends StatefulWidget {
 
 class _RegisterLayoutState extends State<RegisterLayout> {
   String custId = '';
+  bool custIdError = false;
   String firstName = '';
+  bool firstNameError = false;
   String lastName = '';
+  bool lastNameError = false;
   int age = -1;
+  bool ageError = false;
   String mobile = '';
+  bool mobileError = false;
   String password = '';
+  bool passwordError = false;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +72,12 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                                     child: RoundedTextField(
                                       "תעודת זהות",
                                       false,
+                                      custIdError,
+                                      isDigitOnly: false,
                                       onTextChange: (it) {
+                                        if (it.isNotEmpty && custIdError) {
+                                          custIdError = false;
+                                        }
                                         custId = it;
                                       },
                                     ),
@@ -77,7 +89,14 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                                     child: RoundedTextField(
                                       "שם",
                                       false,
+                                      firstNameError,
+                                      isDigitOnly: false,
                                       onTextChange: (it) {
+                                        if (it.isNotEmpty && firstNameError) {
+                                          setState(() {
+                                            firstNameError = false;
+                                          });
+                                        }
                                         firstName = it;
                                       },
                                     ),
@@ -89,7 +108,14 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                                     child: RoundedTextField(
                                       "שם משפחה",
                                       false,
+                                      lastNameError,
+                                      isDigitOnly: false,
                                       onTextChange: (it) {
+                                        if (it.isNotEmpty && lastNameError) {
+                                          setState(() {
+                                            lastNameError = false;
+                                          });
+                                        }
                                         lastName = it;
                                       },
                                     ),
@@ -101,7 +127,14 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                                     child: RoundedTextField(
                                       "גיל",
                                       false,
+                                      ageError,
+                                      isDigitOnly: false,
                                       onTextChange: (it) {
+                                        if (it.isNotEmpty && ageError) {
+                                          setState(() {
+                                            ageError = false;
+                                          });
+                                        }
                                         age = int.parse(it);
                                       },
                                     ),
@@ -113,7 +146,14 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                                     child: RoundedTextField(
                                       "טלפון נייד",
                                       false,
+                                      mobileError,
+                                      isDigitOnly: true,
                                       onTextChange: (it) {
+                                        if (it.isNotEmpty && mobileError) {
+                                          setState(() {
+                                            mobileError = false;
+                                          });
+                                        }
                                         mobile = it;
                                       },
                                     ),
@@ -125,7 +165,14 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                                     child: RoundedTextField(
                                       "סיסמא",
                                       true,
+                                      passwordError,
+                                      isDigitOnly: false,
                                       onTextChange: (it) {
+                                        if (it.isNotEmpty && passwordError) {
+                                          setState(() {
+                                            passwordError = false;
+                                          });
+                                        }
                                         password = it;
                                       },
                                     ),
@@ -143,6 +190,27 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                                         style: TextStyle(color: Colors.white),
                                       ),
                                       onPressed: () {
+                                        setState(() {
+                                          custIdError = custId.isEmpty;
+                                          firstNameError = firstName.isEmpty;
+                                          lastNameError = lastName.isEmpty;
+                                          ageError = (age.toString()).isEmpty ||
+                                              age == -1;
+                                          mobileError = mobile.isEmpty;
+                                          passwordError = password.isEmpty;
+                                        });
+
+                                        if (custIdError ||
+                                            firstNameError ||
+                                            lastNameError ||
+                                            ageError ||
+                                            mobileError ||
+                                            passwordError) {
+                                          Fluttertoast.showToast(
+                                              msg: "All fields is required!");
+                                          return;
+                                        }
+
                                         registerBloc.add(
                                           RegisterEvent(
                                             RegisterUserParam(

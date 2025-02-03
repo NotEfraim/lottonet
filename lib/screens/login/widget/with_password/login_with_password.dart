@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottonet/blocs/login_with_password/login_password_bloc.dart';
 import 'package:lottonet/blocs/login_with_password/login_password_event.dart';
 import 'package:lottonet/blocs/login_with_password/login_password_state.dart';
@@ -25,6 +28,9 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
   String custId = "";
   String mobile = "";
   String password = "";
+  bool custIdError = false;
+  bool mobileError = false;
+  bool passwordError = false;
 
   @override
   Widget build(BuildContext context) {
@@ -45,27 +51,43 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 30),
+                    //Identity card
                     SizedBox(
                       height: widget.textFieldheight,
                       width: widget.textFieldwidth,
                       child: RoundedTextField(
                         "תעודת זהות",
                         false,
+                        custIdError,
+                        isDigitOnly: true,
                         onTextChange: (it) {
+                          if (it.isNotEmpty && custIdError) {
+                            setState(() {
+                              custIdError = false;
+                            });
+                          }
                           custId = it;
                         },
-                      ), //Identity card
+                      ),
                     ),
+                    // Password
                     SizedBox(
                       height: widget.textFieldheight,
                       width: widget.textFieldwidth,
                       child: RoundedTextField(
                         "טלפו",
                         true,
+                        passwordError,
+                        isDigitOnly: false,
                         onTextChange: (it) {
+                          if (it.isNotEmpty && passwordError) {
+                            setState(() {
+                              passwordError = false;
+                            });
+                          }
                           password = it;
                         },
-                      ), // Password
+                      ),
                     ),
                     SizedBox(
                       width: widget.textFieldwidth - 20,
@@ -86,6 +108,17 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {
+                          setState(() {
+                            custIdError = custId.isEmpty;
+                            passwordError = password.isEmpty;
+                          });
+
+                          if (custIdError || passwordError) {
+                            Fluttertoast.showToast(
+                                msg: "All fields is required!");
+                            return;
+                          }
+
                           loginPasswordBloc.add(LoginPasswordEvent(
                               LoginPasswordParam(
                                   custId: custId,

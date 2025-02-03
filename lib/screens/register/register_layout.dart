@@ -128,7 +128,7 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                                       "גיל",
                                       false,
                                       ageError,
-                                      isDigitOnly: false,
+                                      isDigitOnly: true,
                                       onTextChange: (it) {
                                         if (it.isNotEmpty && ageError) {
                                           setState(() {

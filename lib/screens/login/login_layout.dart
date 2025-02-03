@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottonet/screens/login/widget/background_image_screen.dart';
 import 'package:lottonet/screens/login/widget/with_otp/login_with_otp.dart';
 import 'package:lottonet/screens/login/widget/with_password/login_with_password.dart';
 import 'package:lottonet/utils/constants.dart';
@@ -45,105 +46,112 @@ class _LoginLayoutState extends State<LoginLayout>
   Widget build(BuildContext context) {
     final baseSize = MediaQuery.of(context).size;
 
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Stack(
-        children: [
-          Center(
-            child: SizedBox(
-              height: baseSize.height * 0.8,
-              width: baseSize.width * 0.9,
-              child: Column(
-                children: [
-                  SizedBox(height: baseSize.height * 0.05),
-                  // Logo
-                  Image.asset(
-                    '${Constants.imagePath}/main_logo.png',
-                    width: baseSize.width * 0.7,
-                    height: baseSize.height * 0.13,
-                  ),
-
-                  SizedBox(height: baseSize.height * 0.02),
-
-                  Expanded(
-                      child: Column(
+    return Stack(
+      children: [
+        const BackgroundImageScreen(),
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Stack(
+            children: [
+              Center(
+                child: SizedBox(
+                  height: baseSize.height * 0.8,
+                  width: baseSize.width * 0.9,
+                  child: Column(
                     children: [
-                      Stack(
-                        children: [
-                          SizedBox(
-                            height: baseSize.height * .058,
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: baseSize.height * .65,
-                                  width: baseSize.width * .45,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(20)),
-                                    color: tab1Color,
-                                  ),
-                                ),
-                                Container(
-                                  height: baseSize.height * .055,
-                                  width: baseSize.width * .45,
-                                  decoration: BoxDecoration(
-                                    borderRadius: const BorderRadius.only(
-                                        topRight: Radius.circular(20)),
-                                    color: tab2Color,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          TabBar(
-                            unselectedLabelColor: Colors.white,
-                            labelColor: Colors.white,
-                            indicatorColor: Colors.white,
-                            controller: _tabController,
-                            tabs: const [
-                              Tab(text: "כניסה טלפונית"),
-                              Tab(text: "התחברות באימייל"),
-                            ],
-                            overlayColor: WidgetStateColor.transparent,
-                          ),
-                        ],
+                      SizedBox(height: baseSize.height * 0.05),
+                      // Logo
+                      Image.asset(
+                        '${Constants.imagePath}/main_logo.png',
+                        width: baseSize.width * 0.7,
+                        height: baseSize.height * 0.13,
                       ),
+
+                      SizedBox(height: baseSize.height * 0.02),
+
                       Expanded(
-                          child: Stack(
+                          child: Column(
                         children: [
-                          SingleChildScrollView(
-                            child: Container(
-                              height: baseSize.height * .5,
-                              decoration: BoxDecoration(
-                                color: Colors.black.withAlpha(80),
-                                borderRadius: const BorderRadius.only(
-                                  bottomLeft: Radius.circular(20),
-                                  bottomRight: Radius.circular(20),
+                          Stack(
+                            children: [
+                              SizedBox(
+                                height: baseSize.height * .058,
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: baseSize.height * .65,
+                                      width: baseSize.width * .45,
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(20)),
+                                        color: tab1Color,
+                                      ),
+                                    ),
+                                    Container(
+                                      height: baseSize.height * .055,
+                                      width: baseSize.width * .45,
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(20)),
+                                        color: tab2Color,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              child: TabBarView(
+                              TabBar(
+                                unselectedLabelColor: Colors.white,
+                                labelColor: Colors.white,
+                                indicatorColor: Colors.white,
                                 controller: _tabController,
-                                children: [
-                                  LoginWithOtp(
-                                      textFieldheight: baseSize.height * .1,
-                                      textFieldwidth: baseSize.width * .8),
-                                  LoginWithPassword(
-                                      textFieldheight: baseSize.height * .1,
-                                      textFieldwidth: baseSize.width * .8),
+                                tabs: const [
+                                  Tab(text: "כניסה טלפונית"),
+                                  Tab(text: "התחברות באימייל"),
                                 ],
+                                overlayColor: WidgetStateColor.transparent,
                               ),
-                            ),
-                          )
+                            ],
+                          ),
+                          Expanded(
+                              child: Stack(
+                            children: [
+                              SingleChildScrollView(
+                                child: Container(
+                                  height: baseSize.height * .5,
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withAlpha(80),
+                                    borderRadius: const BorderRadius.only(
+                                      bottomLeft: Radius.circular(20),
+                                      bottomRight: Radius.circular(20),
+                                    ),
+                                  ),
+                                  child: TabBarView(
+                                    controller: _tabController,
+                                    children: [
+                                      LoginWithOtp(
+                                          textFieldheight:
+                                              baseSize.height * .09,
+                                          textFieldwidth: baseSize.width * .8),
+                                      LoginWithPassword(
+                                          textFieldheight:
+                                              baseSize.height * .09,
+                                          textFieldwidth: baseSize.width * .8),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          )),
                         ],
-                      )),
+                      ))
                     ],
-                  ))
-                ],
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        )
+      ],
     );
   }
 }

@@ -6,11 +6,12 @@ import 'package:lottonet/repositories/login_otp/check_login_code_repository.dart
 import 'package:lottonet/repositories/login_otp/send_code_repository.dart';
 import 'package:lottonet/repositories/login_password/login_password_repository.dart';
 import 'package:lottonet/screens/login/login_layout.dart';
-import 'package:lottonet/screens/login/widget/background_image_screen.dart';
+import 'package:lottonet/screens/register/register_layout.dart';
+import 'package:lottonet/utils/routes.dart';
 
 void main() {
-  runApp(MaterialApp(
-    home: MultiBlocProvider(
+  runApp(
+    MultiBlocProvider(
         providers: [
           BlocProvider(
             create: (context) => LoginOtpBloc(
@@ -24,8 +25,13 @@ void main() {
             ),
           )
         ],
-        child: const Stack(
-          children: [BackgroundImageScreen(), LoginLayout()],
+        child: MaterialApp(
+          title: "Lotto Net",
+          initialRoute: Routes.login,
+          routes: {
+            Routes.login: (context) => const LoginLayout(),
+            Routes.register: (context) => const RegisterLayout()
+          },
         )),
-  ));
+  );
 }

@@ -9,6 +9,9 @@ import 'package:lottonet/blocs/login_with_password/login_password_state.dart';
 import 'package:lottonet/models/login_otp/send_code/send_code_param.dart';
 import 'package:lottonet/models/login_password/login_password_param.dart';
 import 'package:lottonet/screens/login/widget/rounded_text_field.dart';
+import 'package:lottonet/screens/register/register_layout.dart';
+import 'package:lottonet/utils/navigation_ext.dart';
+import 'package:lottonet/utils/routes.dart';
 
 class LoginWithPassword extends StatefulWidget {
   final double textFieldheight;
@@ -98,11 +101,17 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
                     ),
                     const SizedBox(height: 20),
                     SizedBox(
-                      width: widget.textFieldwidth,
-                      child: const Text("משתמש חדש? הרשם כאן",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.white)),
-                    ),
+                        width: widget.textFieldwidth * .8,
+                        child: TextButton(
+                          onPressed: () {
+                            context.navigate(Routes.register);
+                          },
+                          child: const Text("משתמש חדש? הרשם כאן",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  decoration: TextDecoration.underline)),
+                        )),
                   ],
                 );
               }),

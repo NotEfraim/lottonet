@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottonet/blocs/base_event.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_event.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_state.dart';
@@ -18,6 +19,7 @@ class LoginOtpBloc extends Bloc<BaseEvent, LoginOtpState> {
         try {
           final response = await sendCodeRepository.sendOTP(event.param);
           HttpLogger("HTTP", "Success ${response.toJson()}");
+          Fluttertoast.showToast(msg: "Success ${response.toJson()}");
           emit(state.copyWith(
               isLoading: false, isSendCodeSuccess: response.result == 0));
         } catch (e) {
@@ -36,6 +38,7 @@ class LoginOtpBloc extends Bloc<BaseEvent, LoginOtpState> {
           emit(state.copyWith(
               isLoading: false, checkOTPSuccess: response.result == 0));
           HttpLogger("HTTP", "Success ${response.toJson()}");
+          Fluttertoast.showToast(msg: "Success ${response.toJson()}");
         } catch (e) {
           HttpLogger("HTTP", e.toString());
           emit(state.copyWith(isLoading: false, errorMsg: e.toString()));

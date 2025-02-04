@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  loading_animation_widget:
   fluttertoast: ^8.2.10
   shared_preferences: ^2.0.15
   dio: ^5.0.0

@@ -105,8 +105,8 @@ class _LoginLayoutState extends State<LoginLayout>
                                 indicatorColor: Colors.white,
                                 controller: _tabController,
                                 tabs: const [
-                                  Tab(text: "כניסה טלפונית"),
-                                  Tab(text: "התחברות באימייל"),
+                                  Tab(text: "קוד חד פעמי"),
+                                  Tab(text: "שם משתמש וסיסמא"),
                                 ],
                                 overlayColor: WidgetStateColor.transparent,
                               ),

@@ -8,6 +8,7 @@ import 'package:lottonet/models/register/register_user_param.dart';
 import 'package:lottonet/screens/login/widget/background_image_screen.dart';
 import 'package:lottonet/screens/login/widget/rounded_text_field.dart';
 import 'package:lottonet/utils/constants.dart';
+import 'package:lottonet/utils/extensions.dart';
 import 'package:lottonet/utils/navigation_ext.dart';
 
 class RegisterLayout extends StatefulWidget {
@@ -49,6 +50,8 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                     width: baseSize.width * 0.9,
                     child: BlocBuilder<RegisterBloc, RegisterState>(
                       builder: (context, state) {
+
+                        if(state.isLoading == false) hideLoading(context);
                         return Column(
                           children: [
                             SizedBox(height: baseSize.height * 0.05),
@@ -211,6 +214,7 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                                           return;
                                         }
 
+                                        showLoading(context);
                                         registerBloc.add(
                                           RegisterEvent(
                                             RegisterUserParam(

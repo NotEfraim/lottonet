@@ -7,6 +7,7 @@ import 'package:lottonet/blocs/login_with_password/login_password_state.dart';
 import 'package:lottonet/models/login_password/login_password_param.dart';
 import 'package:lottonet/screens/login/widget/rounded_text_field.dart';
 import 'package:lottonet/utils/constants.dart';
+import 'package:lottonet/utils/extensions.dart';
 import 'package:lottonet/utils/navigation_ext.dart';
 import 'package:lottonet/utils/routes.dart';
 
@@ -45,6 +46,9 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
                   horizontal: 10.0), // Add padding for better spacing
               child: BlocBuilder<LoginPasswordBloc, LoginPasswordState>(
                   builder: (context, state) {
+
+                if(state.isLoading == false) hideLoading(context);   
+                 
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -117,6 +121,7 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
                             return;
                           }
 
+                          showLoading(context);
                           loginPasswordBloc.add(LoginPasswordEvent(
                               LoginPasswordParam(
                                   custId: custId,

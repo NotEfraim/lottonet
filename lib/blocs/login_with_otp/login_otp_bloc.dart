@@ -5,6 +5,7 @@ import 'package:lottonet/blocs/login_with_otp/login_otp_event.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_state.dart';
 import 'package:lottonet/repositories/login_otp/check_login_code_repository.dart';
 import 'package:lottonet/repositories/login_otp/send_code_repository.dart';
+import 'package:lottonet/utils/extensions.dart';
 import 'package:lottonet/utils/http_logger.dart';
 
 class LoginOtpBloc extends Bloc<BaseEvent, LoginOtpState> {

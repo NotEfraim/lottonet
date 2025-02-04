@@ -15,7 +15,7 @@ class LoginPasswordBloc extends Bloc<BaseEvent, LoginPasswordState> {
         try {
           final response =
               await loginPasswordRepository.loginWithPassword(event.param);
-          emit(state.copyWith(response: response));
+          emit(state.copyWith(isLoading: false,response: response));
           Fluttertoast.showToast(msg: "Success ${response.toJson()}");
         } catch (e) {
           emit(state.copyWith(isLoading: false, errorMsg: e.toString()));

@@ -8,6 +8,7 @@ import 'package:lottonet/models/login_otp/check_login_code/check_login_code_para
 import 'package:lottonet/models/login_otp/send_code/send_code_param.dart';
 import 'package:lottonet/screens/login/widget/rounded_text_field.dart';
 import 'package:lottonet/utils/constants.dart';
+import 'package:lottonet/utils/extensions.dart';
 import 'package:lottonet/utils/navigation_ext.dart';
 import 'package:lottonet/utils/routes.dart';
 
@@ -35,6 +36,9 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
     final loginOTPBloc = context.read<LoginOtpBloc>();
 
     void buttonClickFunction(bool? isSendCodeSuccess) {
+
+      showLoading(context);
+
       setState(() {
         custIdError = custId.isEmpty;
         mobileError = mobile.isEmpty;
@@ -74,6 +78,9 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
                   horizontal: 10.0), // Add padding for better spacing
               child: BlocBuilder<LoginOtpBloc, LoginOtpState>(
                   builder: (context, state) {
+
+                if(state.isLoading == false) hideLoading(context);
+
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

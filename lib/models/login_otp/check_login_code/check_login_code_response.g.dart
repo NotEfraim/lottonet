@@ -11,6 +11,7 @@ CheckLoginCodeResponse _$CheckLoginCodeResponseFromJson(
     CheckLoginCodeResponse(
       json['message'] as String?,
       (json['result'] as num).toInt(),
+      json['token'] as String?,
     );
 
 Map<String, dynamic> _$CheckLoginCodeResponseToJson(
@@ -18,4 +19,5 @@ Map<String, dynamic> _$CheckLoginCodeResponseToJson(
     <String, dynamic>{
       'result': instance.result,
       'message': instance.message,
+      'token': instance.token,
     };

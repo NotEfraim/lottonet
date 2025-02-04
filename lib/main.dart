@@ -12,6 +12,8 @@ import 'package:lottonet/screens/login/login_layout.dart';
 import 'package:lottonet/screens/register/register_layout.dart';
 import 'package:lottonet/utils/routes.dart';
 
+String activeToken = '';
+
 void main() {
   runApp(
     MultiBlocProvider(

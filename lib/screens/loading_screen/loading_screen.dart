@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:lottonet/main.dart';
 import 'package:lottonet/screens/login/widget/background_image_screen.dart';
 import 'package:lottonet/utils/constants.dart';
 import 'package:lottonet/utils/extensions.dart';
 import 'package:lottonet/utils/navigation_ext.dart';
 import 'package:lottonet/utils/routes.dart';
+import 'package:lottonet/utils/shared_pref.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({super.key});
@@ -17,7 +19,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
   showLoading(context);
   
   try {
-    await Future.delayed(const Duration(seconds: 3)); // Simulate resource loading
+    final data = await getData<String>(Constants.tokenKey);
+    activeToken = '$data';
+    await Future.delayed(const Duration(seconds: 2)); // Simulate resource loading
   } finally {
     hideLoading(context);
   }
@@ -27,7 +31,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
     context.navigateAndFinish(Routes.login);
   }
 }
-
 
   @override
   void initState() {

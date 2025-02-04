@@ -5,7 +5,8 @@ part 'check_login_code_response.g.dart';
 
 @JsonSerializable()
 class CheckLoginCodeResponse extends BaseResponse {
-  CheckLoginCodeResponse(super.message, super.result);
+  final String? token;
+  CheckLoginCodeResponse(super.message, super.result, this.token);
 
   factory CheckLoginCodeResponse.fromJson(Map<String, dynamic> json) =>
       _$CheckLoginCodeResponseFromJson(json);

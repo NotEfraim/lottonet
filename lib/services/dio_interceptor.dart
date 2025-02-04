@@ -1,7 +1,23 @@
 import 'package:dio/dio.dart';
+import 'package:lottonet/main.dart';
 
 Dio dioInterceptor() {
   final dio = Dio();
+
+  dio.interceptors.add(InterceptorsWrapper(
+    onRequest: (options, handler) {
+      if(activeToken.isNotEmpty){
+      options.headers['Authorization'] = 'Bearer $activeToken';
+      }
+      return handler.next(options);
+    },
+    onResponse: (response, handler) {
+      return handler.next(response);
+    },
+    onError: (error, handler) {
+      return handler.next(error);
+    },
+  ));
 
   dio.interceptors.add(
     LogInterceptor(
@@ -13,18 +29,6 @@ Dio dioInterceptor() {
       error: true,
     ),
   );
-
-  dio.interceptors.add(InterceptorsWrapper(
-    onRequest: (options, handler) {
-      return handler.next(options);
-    },
-    onResponse: (response, handler) {
-      return handler.next(response);
-    },
-    onError: (error, handler) {
-      return handler.next(error);
-    },
-  ));
 
   return dio;
 }

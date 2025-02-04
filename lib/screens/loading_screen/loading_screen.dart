@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottonet/blocs/loading/loading_bloc.dart';
+import 'package:lottonet/blocs/loading/loading_event.dart';
+import 'package:lottonet/blocs/loading/loading_state.dart';
 import 'package:lottonet/main.dart';
 import 'package:lottonet/screens/login/widget/background_image_screen.dart';
 import 'package:lottonet/utils/constants.dart';
@@ -15,22 +19,20 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+
+  String tokenStatus = '';
+
   Future<void> getResources(BuildContext context) async {
-  showLoading(context);
-  
-  try {
+    final loadingBloc = context.read<LoadingBloc>();
+
+    showLoading(context);
     final data = await getData<String>(Constants.tokenKey);
     activeToken = '$data';
-    await Future.delayed(const Duration(seconds: 2)); // Simulate resource loading
-  } finally {
-    hideLoading(context);
-  }
-
-  await Future.delayed(const Duration(seconds: 1)); // Allow UI to update before navigating
-  if (context.mounted) {
+    loadingBloc.add(LoadingEvent());
+    await Future.delayed(Duration(seconds: 2));
     context.navigateAndFinish(Routes.login);
+    
   }
-}
 
   @override
   void initState() {
@@ -44,35 +46,43 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     final baseSize = MediaQuery.of(context).size;
-    return Expanded(
-      child: Stack(
-        children: [
-          const BackgroundImageScreen(),
-          Center(
-            child: Column(
-              children: [
-                SizedBox(height: baseSize.height * 0.20),
-                // Logo
-                Image.asset(
-                  '${Constants.imagePath}/main_logo.png',
-                  width: baseSize.width * 0.7,
-                  height: baseSize.height * 0.13,
-                ),
 
-                SizedBox(height: baseSize.height * 0.4),
+    return Scaffold(body: BlocBuilder<LoadingBloc, LoadingState>(
+      builder: (_, state) {
 
-                const Text(
-                  'בודק משאבים...',
-                  style: TextStyle(
-                      color: Colors.white,
-                      decoration: TextDecoration.none,
-                      fontSize: 18),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    );
+        if(state.isLoading == false) {
+          hideLoading(context);
+        }
+
+        return Stack(
+          children: [
+            const BackgroundImageScreen(),
+            Center(
+              child: Column(
+                children: [
+                  SizedBox(height: baseSize.height * 0.20),
+                  // Logo
+                  Image.asset(
+                    '${Constants.imagePath}/main_logo.png',
+                    width: baseSize.width * 0.7,
+                    height: baseSize.height * 0.13,
+                  ),
+
+                  SizedBox(height: baseSize.height * 0.4),
+
+                  const Text(
+                    'בודק משאבים...',
+                    style: TextStyle(
+                        color: Colors.white,
+                        decoration: TextDecoration.none,
+                        fontSize: 18),
+                  )
+                ],
+              ),
+            )
+          ],
+        );
+      },
+    ));
   }
 }

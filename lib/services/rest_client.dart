@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:lottonet/models/loading/loading_response.dart';
 import 'package:lottonet/models/login_otp/check_login_code/check_login_code_param.dart';
 import 'package:lottonet/models/login_otp/check_login_code/check_login_code_response.dart';
 import 'package:lottonet/models/login_otp/send_code/send_code_param.dart';
@@ -29,4 +30,7 @@ abstract class RestClient {
 
   @POST("/createCustomer")
   Future<RegisterUserResponse> createUser(@Body() RegisterUserParam param);
+
+  @POST("/checkBearerToken")
+  Future<LoadingResponse> checkBearerToken();
 }

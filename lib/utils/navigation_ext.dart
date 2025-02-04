@@ -10,6 +10,7 @@ extension NavigationExt on BuildContext {
   }
 
   void navigateAndFinish(String routeName, {Object? arg}) {
-    Navigator.pushReplacementNamed(this, routeName, arguments: arg);
+    Navigator.of(this).pushReplacementNamed(routeName, arguments: arg);
+    // Navigator.pushReplacementNamed(this, routeName, arguments: arg);
   }
 }

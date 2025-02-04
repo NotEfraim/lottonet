@@ -10,6 +10,7 @@ import 'package:lottonet/screens/login/widget/rounded_text_field.dart';
 import 'package:lottonet/utils/constants.dart';
 import 'package:lottonet/utils/extensions.dart';
 import 'package:lottonet/utils/navigation_ext.dart';
+import 'package:lottonet/utils/routes.dart';
 
 class RegisterLayout extends StatefulWidget {
   const RegisterLayout({super.key});

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottonet/blocs/loading/loading_bloc.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_bloc.dart';
 import 'package:lottonet/blocs/login_with_password/login_password_bloc.dart';
 import 'package:lottonet/blocs/register/register_bloc.dart';
+import 'package:lottonet/repositories/loading/loading_repository.dart';
 import 'package:lottonet/repositories/login_otp/check_login_code_repository.dart';
 import 'package:lottonet/repositories/login_otp/send_code_repository.dart';
 import 'package:lottonet/repositories/login_password/login_password_repository.dart';
@@ -30,7 +32,14 @@ void main() {
             ),
           ),
           BlocProvider(
-            create: (context) => RegisterBloc(CreateUserRepository()),
+            create: (context) => RegisterBloc(
+              CreateUserRepository(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => LoadingBloc(
+              LoadingRepository(),
+            ),
           )
         ],
         child: MaterialApp(
@@ -40,7 +49,6 @@ void main() {
             Routes.loadingScreen: (context) => const LoadingScreen(),
             Routes.login: (context) => const LoginLayout(),
             Routes.register: (context) => const RegisterLayout(),
-
           },
         )),
   );

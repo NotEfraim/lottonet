@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lottonet/screens/dialogs/loading_dialog.dart';
+import 'package:lottonet/screens/loading_dialog/loading_dialog.dart';
 
 void showLoading(BuildContext context) async {
     LoadingDialog.show(context);

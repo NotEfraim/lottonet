@@ -8,4 +8,8 @@ extension NavigationExt on BuildContext {
   void popBackStack() {
     Navigator.pop(this);
   }
+
+  void navigateAndFinish(String routeName, {Object? arg}) {
+    Navigator.pushReplacementNamed(this, routeName, arguments: arg);
+  }
 }

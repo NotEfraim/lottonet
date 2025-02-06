@@ -36,7 +36,6 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
     final loginOTPBloc = context.read<LoginOtpBloc>();
 
     void buttonClickFunction(bool? isSendCodeSuccess) {
-
       showLoading(context);
 
       setState(() {
@@ -76,11 +75,10 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
             child: Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: 10.0), // Add padding for better spacing
-              child: BlocBuilder<LoginOtpBloc, LoginOtpState>(
-                  builder: (context, state) {
-
-                if(state.isLoading == false) hideLoading(context);
-
+              child: BlocConsumer<LoginOtpBloc, LoginOtpState>(
+                  listener: (context, state) {
+                if (state.isLoading == false) hideLoading(context);
+              }, builder: (context, state) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

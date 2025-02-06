@@ -10,7 +10,6 @@ import 'package:lottonet/screens/login/widget/rounded_text_field.dart';
 import 'package:lottonet/utils/constants.dart';
 import 'package:lottonet/utils/extensions.dart';
 import 'package:lottonet/utils/navigation_ext.dart';
-import 'package:lottonet/utils/routes.dart';
 
 class RegisterLayout extends StatefulWidget {
   const RegisterLayout({super.key});
@@ -49,10 +48,14 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                 child: SizedBox(
                     height: baseSize.height * 0.9,
                     width: baseSize.width * 0.9,
-                    child: BlocBuilder<RegisterBloc, RegisterState>(
+                    child: BlocConsumer<RegisterBloc, RegisterState>(
+                      listener: (context, state) {
+                        if (state.isLoading == false) hideLoading(context);
+                        if (state.response?.result == 0) {
+                          context.popBackStack();
+                        }
+                      },
                       builder: (context, state) {
-
-                        if(state.isLoading == false) hideLoading(context);
                         return Column(
                           children: [
                             SizedBox(height: baseSize.height * 0.05),

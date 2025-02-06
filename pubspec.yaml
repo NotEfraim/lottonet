@@ -75,6 +75,12 @@ flutter:
     - assets/images/main_logo.png
     - assets/images/password_show.png
     - assets/images/password_hide.png
+    - assets/images/profile_icon.png
+    - assets/images/lottery_card_side_icon.png
+    - assets/images/77_card_side_icon.png
+    - assets/images/123_card_side_icon.png
+    - assets/images/chance_card_side_icon.png
+    - assets/images/wechat_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

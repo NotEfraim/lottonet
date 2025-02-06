@@ -44,11 +44,10 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
             child: Padding(
               padding: const EdgeInsets.symmetric(
                   horizontal: 10.0), // Add padding for better spacing
-              child: BlocBuilder<LoginPasswordBloc, LoginPasswordState>(
-                  builder: (context, state) {
-
-                if(state.isLoading == false) hideLoading(context);   
-                 
+              child: BlocConsumer<LoginPasswordBloc, LoginPasswordState>(
+                  listener: (context, state) {
+                if (state.isLoading == false) hideLoading(context);
+              }, builder: (context, state) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

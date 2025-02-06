@@ -19,7 +19,6 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-
   String tokenStatus = '';
 
   Future<void> getResources(BuildContext context) async {
@@ -29,9 +28,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
     final data = await getData<String>(Constants.tokenKey);
     activeToken = '$data';
     loadingBloc.add(LoadingEvent());
-    await Future.delayed(Duration(seconds: 2));
-    context.navigateAndFinish(Routes.login);
-    
   }
 
   @override
@@ -47,13 +43,15 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Widget build(BuildContext context) {
     final baseSize = MediaQuery.of(context).size;
 
-    return Scaffold(body: BlocBuilder<LoadingBloc, LoadingState>(
-      builder: (_, state) {
-
-        if(state.isLoading == false) {
+    return Scaffold(
+        body: BlocConsumer<LoadingBloc, LoadingState>(
+      listener: (context, state) {
+        if (state.isLoading == false) {
           hideLoading(context);
+          context.navigateAndFinish(Routes.login);
         }
-
+      },
+      builder: (_, state) {
         return Stack(
           children: [
             const BackgroundImageScreen(),

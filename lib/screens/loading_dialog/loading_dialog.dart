@@ -12,7 +12,7 @@ class LoadingDialog {
         child: Center(
           child: LoadingAnimationWidget.inkDrop(
             color: Colors.white,
-            size: 50, // Increased size for better visibility
+            size: 40, // Increased size for better visibility
           ),
         ),
       ),
@@ -25,4 +25,3 @@ class LoadingDialog {
     }
   }
 }
-

@@ -36,12 +36,14 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
     final loginOTPBloc = context.read<LoginOtpBloc>();
 
     void buttonClickFunction(bool? isSendCodeSuccess) {
-      showLoading(context);
-
       setState(() {
         custIdError = custId.isEmpty;
         mobileError = mobile.isEmpty;
       });
+
+      if (custId.isNotEmpty && mobile.isNotEmpty) {
+        showLoading(context);
+      }
 
       if (isSendCodeSuccess == true) {
         setState(() {
@@ -78,6 +80,9 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
               child: BlocConsumer<LoginOtpBloc, LoginOtpState>(
                   listener: (context, state) {
                 if (state.isLoading == false) hideLoading(context);
+                if (state.checkOTPSuccess == true) {
+                  context.navigateAndFinish(Routes.mainScreen);
+                }
               }, builder: (context, state) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lottonet/models/game_card/game_card_model.dart';
 import 'package:lottonet/screens/main_screen/custom_slide_countdown.dart';
 import 'package:lottonet/utils/constants.dart';
+import 'package:lottonet/utils/extensions.dart';
 
 class GameCard extends StatelessWidget {
   final GameCardModel model;
@@ -31,7 +32,7 @@ class GameCard extends StatelessWidget {
           children: [
             _buildTopRow(model),
             const SizedBox(height: 10),
-            _buildCountdownRow(),
+            _buildCountdownRow(model.duration ?? const Duration(hours: 1)),
           ],
         ),
       ),
@@ -42,15 +43,17 @@ class GameCard extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _buildPrizeAmount(data.prize ?? ''),
+        _buildPrizeAmount(int.parse(data.prize ?? '0').toCurrency()),
+        const Spacer(),
         Text(
           data.day ?? '',
           textAlign: TextAlign.end,
-          style: const TextStyle(color: Colors.white, fontSize: 14),
+          style: const TextStyle(color: Colors.white, fontSize: 18),
         ),
+        const Spacer(),
         Text(
           data.gameName ?? '',
-          style: const TextStyle(color: Colors.white, fontSize: 18),
+          style: const TextStyle(color: Colors.white, fontSize: 22),
         ),
         const SizedBox(
           width: 10,
@@ -78,18 +81,19 @@ class GameCard extends StatelessWidget {
     );
   }
 
-  Row _buildCountdownRow() {
+  Row _buildCountdownRow(Duration duration) {
     return Row(
       children: [
         CustomSlideCountdown(
-          initialDuration: const Duration(hours: 1),
+          initialDuration: duration,
           onAnimationDone: () {},
         ),
         const Spacer(),
         Image.asset(
-          '${Constants.imagePath}/$sideIcon',
-          width: 60,
-          height: 60,
+          '${Constants.imagePath}$sideIcon',
+          width: 50,
+          height: 50,
+          fit: BoxFit.fill,
         )
       ],
     );

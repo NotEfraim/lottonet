@@ -61,7 +61,7 @@ class _CountUpTimerState extends State<CustomSlideCountdown> {
       children: [
         buildTimeColumn(hours, "שעות"),
         buildTimeColumn(minutes, "דקות"),
-        buildTimeColumn(seconds, "שניות", isLast: true),
+        // buildTimeColumn(seconds, "שניות", isLast: true),
       ],
     );
   }
@@ -75,7 +75,7 @@ class _CountUpTimerState extends State<CustomSlideCountdown> {
             buildDigit(time[0]),
             buildDigit(time[1]),
             const SizedBox(
-              width: 10,
+              width: 5,
             )
           ],
         ),

@@ -47,6 +47,9 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
               child: BlocConsumer<LoginPasswordBloc, LoginPasswordState>(
                   listener: (context, state) {
                 if (state.isLoading == false) hideLoading(context);
+                if (state.response?.result == 0) {
+                  context.navigateAndFinish(Routes.mainScreen);
+                }
               }, builder: (context, state) {
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,

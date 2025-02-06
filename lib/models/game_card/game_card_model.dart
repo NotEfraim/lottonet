@@ -6,7 +6,7 @@ class GameCardModel {
   final String? prize;
   final String? day;
   final String? gameName;
-  final String? duration;
+  final Duration? duration;
 
   GameCardModel({this.prize, this.day, this.gameName, this.duration});
 }

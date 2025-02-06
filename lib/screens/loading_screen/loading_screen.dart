@@ -48,6 +48,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
       listener: (context, state) {
         if (state.isLoading == false) {
           hideLoading(context);
+          if (state.response?.token == 'active') {
+            context.navigateAndFinish(Routes.mainScreen);
+            return;
+          }
           context.navigateAndFinish(Routes.login);
         }
       },

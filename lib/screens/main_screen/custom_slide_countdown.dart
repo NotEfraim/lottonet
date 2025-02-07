@@ -11,7 +11,7 @@ class CustomSlideCountdown extends StatefulWidget {
       required this.onAnimationDone});
 
   @override
-  _CountUpTimerState createState() => _CountUpTimerState();
+  State createState() => _CountUpTimerState();
 }
 
 class _CountUpTimerState extends State<CustomSlideCountdown> {

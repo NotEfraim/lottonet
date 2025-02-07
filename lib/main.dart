@@ -13,6 +13,7 @@ import 'package:lottonet/repositories/main_screen/get_main_page_repository.dart'
 import 'package:lottonet/repositories/register/create_user_repository.dart';
 import 'package:lottonet/screens/loading_screen/loading_screen.dart';
 import 'package:lottonet/screens/login/login_layout.dart';
+import 'package:lottonet/screens/login/widget/with_otp/input_otp.dart';
 import 'package:lottonet/screens/main_screen/main_screen.dart';
 import 'package:lottonet/screens/register/register_layout.dart';
 import 'package:lottonet/utils/routes.dart';
@@ -52,12 +53,13 @@ void main() {
         ],
         child: MaterialApp(
           title: "Lotto Net",
-          initialRoute: Routes.loadingScreen,
+          initialRoute: Routes.inputOtp,
           routes: {
             Routes.loadingScreen: (context) => const LoadingScreen(),
             Routes.login: (context) => const LoginLayout(),
             Routes.register: (context) => const RegisterLayout(),
-            Routes.mainScreen: (context) => const MainScreen()
+            Routes.mainScreen: (context) => const MainScreen(),
+            Routes.inputOtp: (context) => const InputOtp(),
           },
         )),
   );

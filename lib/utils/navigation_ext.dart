@@ -14,8 +14,14 @@ extension NavigationExt on BuildContext {
     // Navigator.pushReplacementNamed(this, routeName, arguments: arg);
   }
 
-  T? getArgument<T>(){
-     final args = ModalRoute.of(this)?.settings.arguments as T?;
+  T? getArgument<T>() {
+    final args = ModalRoute.of(this)?.settings.arguments as T?;
     return args;
+  }
+
+  void pushRemoveAll(String routeName, {Object? arg}) {
+    Navigator.of(this).pushNamedAndRemoveUntil(
+        routeName, (Route<dynamic> route) => false,
+        arguments: arg);
   }
 }

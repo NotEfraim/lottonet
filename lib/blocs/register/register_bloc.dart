@@ -15,7 +15,7 @@ class RegisterBloc extends Bloc<BaseEvent, RegisterState> {
         try {
           final response = await createUserRepository.createUser(event.param);
           HttpLogger("HTTP", '${response.toJson()}');
-          Fluttertoast.showToast(msg: '${response.toJson()}');
+          Fluttertoast.showToast(msg: response.message ?? 'Success');
           emit(state.copyWith(isLoading: false, response: response));
         } catch (e) {
           HttpLogger('HTTP', e.toString());

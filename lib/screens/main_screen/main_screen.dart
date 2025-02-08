@@ -1,13 +1,20 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottonet/blocs/main_screen/main_screen_bloc.dart';
 import 'package:lottonet/blocs/main_screen/main_screen_event.dart';
 import 'package:lottonet/blocs/main_screen/main_screen_state.dart';
+import 'package:lottonet/main.dart';
 import 'package:lottonet/models/game_card/game_card_model.dart';
 import 'package:lottonet/screens/login/widget/background_image_screen.dart';
 import 'package:lottonet/screens/main_screen/game_card.dart';
 import 'package:lottonet/utils/constants.dart';
 import 'package:lottonet/utils/extensions.dart';
+import 'package:lottonet/utils/navigation_ext.dart';
+import 'package:lottonet/utils/routes.dart';
+import 'package:lottonet/utils/shared_pref.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -28,6 +35,10 @@ class _MainScreenState extends State<MainScreen> {
 
     // If the target date is in the past or the same, return Duration.zero
     return Duration.zero;
+  }
+
+  Future<void> logout() async {
+    saveData(Constants.tokenKey, '');
   }
 
   Widget buildGameCards(MainScreenState state) {
@@ -166,7 +177,12 @@ class _MainScreenState extends State<MainScreen> {
                                   height: 40,
                                   width: 40,
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  activeToken = '';
+                                  logout();
+                                  Fluttertoast.showToast(msg: 'Logged out');
+                                  context.pushRemoveAll(Routes.login);
+                                },
                               ),
                             ],
                           ),
@@ -201,7 +217,8 @@ class _MainScreenState extends State<MainScreen> {
                               children: [
                                 const Text(
                                   ' צור קשר עם שירות הלקוחות',
-                                  style: TextStyle(color: Colors.white, fontSize: 13),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 13),
                                 ),
                                 const Spacer(),
                                 Image.asset(

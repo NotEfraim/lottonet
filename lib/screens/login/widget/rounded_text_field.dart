@@ -7,10 +7,14 @@ class RoundedTextField extends StatefulWidget {
   final bool obscureText;
   final bool isError;
   final bool isDigitOnly;
+  final FocusNode? focusNode;
   final Function(String) onTextChange;
 
   const RoundedTextField(this.hintText, this.obscureText, this.isError,
-      {super.key, required this.onTextChange, required this.isDigitOnly});
+      {super.key,
+      required this.onTextChange,
+      required this.isDigitOnly,
+      this.focusNode});
 
   @override
   State<StatefulWidget> createState() => _RoundedTextFieldState();
@@ -40,6 +44,7 @@ class _RoundedTextFieldState extends State<RoundedTextField> {
             Expanded(
               flex: 8,
               child: TextField(
+                focusNode: widget.focusNode,
                 keyboardType: widget.isDigitOnly
                     ? TextInputType.number
                     : TextInputType.text,

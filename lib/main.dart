@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottonet/blocs/input_otp/input_otp_bloc.dart';
 import 'package:lottonet/blocs/loading/loading_bloc.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_bloc.dart';
 import 'package:lottonet/blocs/login_with_password/login_password_bloc.dart';
@@ -27,7 +28,6 @@ void main() {
           BlocProvider(
             create: (context) => LoginOtpBloc(
               SendCodeRepository(),
-              CheckLoginCodeRepository(),
             ),
           ),
           BlocProvider(
@@ -48,6 +48,11 @@ void main() {
           BlocProvider(
             create: (context) => MainScreenBloc(
               GetMainPageRepository(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => InputOtpBloc(
+              CheckLoginCodeRepository(),
             ),
           )
         ],

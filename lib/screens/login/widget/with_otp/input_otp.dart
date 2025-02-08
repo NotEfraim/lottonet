@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lottonet/blocs/login_with_otp/login_otp_bloc.dart';
-import 'package:lottonet/blocs/login_with_otp/login_otp_event.dart';
-import 'package:lottonet/blocs/login_with_otp/login_otp_state.dart';
+import 'package:lottonet/blocs/input_otp/input_otp_bloc.dart';
+import 'package:lottonet/blocs/input_otp/input_otp_event.dart';
+import 'package:lottonet/blocs/input_otp/input_otp_state.dart';
 import 'package:lottonet/models/login_otp/check_login_code/check_login_code_param.dart';
 import 'package:lottonet/screens/login/widget/background_image_screen.dart';
 import 'package:lottonet/utils/constants.dart';
+import 'package:lottonet/utils/extensions.dart';
 import 'package:lottonet/utils/navigation_ext.dart';
+import 'package:lottonet/utils/routes.dart';
 
 class InputOtp extends StatefulWidget {
   const InputOtp({super.key});
@@ -84,14 +86,13 @@ class _InputOtpState extends State<InputOtp> {
   }
 
   void checkCodeApi(String code) {
-    final loginOtpBloc = context.read<LoginOtpBloc>();
-    final args = ModalRoute.of(context)?.settings.arguments;
-    print('ObjX $args');
-    if(args == null) return;
-    // final uniqe_id = args.uniqe_id;
-    // final mobile = args.mobile;
-    // loginOtpBloc.add(CheckLoginCodeEvent(
-    //     CheckLoginCodeParam(mobile: mobile, uniqe_id: uniqe_id, code: code)));
+    final inputOtpBloc = context.read<InputOtpBloc>();
+    final args = context.getArgument<CheckLoginCodeParam>();
+    if (args == null) return;
+    final uniqe_id = args.uniqe_id;
+    final mobile = args.mobile;
+    inputOtpBloc.add(CheckLoginCodeEvent(
+        CheckLoginCodeParam(mobile: mobile, uniqe_id: uniqe_id, code: code)));
   }
 
   @override
@@ -105,106 +106,106 @@ class _InputOtpState extends State<InputOtp> {
   @override
   Widget build(BuildContext context) {
     final baseSize = MediaQuery.of(context).size;
-    final loginOtpBloc = context.read<LoginOtpBloc>();
-        final args = context.getArgument();
-    print('ObjX $args');
+    final inputOtpBloc = context.read<InputOtpBloc>();
 
-    return BlocConsumer<LoginOtpBloc, LoginOtpState>(
-        builder: (context, state) {
-          return Directionality(
-            textDirection: TextDirection.rtl,
-            child: Stack(
-              children: [
-                const BackgroundImageScreen(),
-                Scaffold(
-                    backgroundColor: Colors.transparent,
-                    body: SingleChildScrollView(
-                      child: Center(
-                        child: Column(
-                          children: [
-                            SizedBox(height: baseSize.height * 0.15),
-                            // Logo
-                            Image.asset(
-                              '${Constants.imagePath}/main_logo.png',
-                              width: baseSize.width * 0.7,
-                              height: baseSize.height * 0.13,
-                            ),
-
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 20),
-                              width: baseSize.width * .9,
-                              decoration: BoxDecoration(
-                                  color: Colors.black.withAlpha(80),
-                                  borderRadius: BorderRadius.circular(7)),
-                              child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const SizedBox(height: 20),
-                                    const Text(
-                                      "הודעת sms שמכילה קוד אימות נשלחה לנייד שלך שמספרו 05X-XXXX120",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 14),
-                                    ),
-                                    const SizedBox(height: 20),
-                                    buildPinField(
-                                      onPin1Change: (value) =>
-                                          loginOtpBloc.add(UpdatePin(0, value)),
-                                      onPin2Change: (value) =>
-                                          loginOtpBloc.add(UpdatePin(1, value)),
-                                      onPin3Change: (value) =>
-                                          loginOtpBloc.add(UpdatePin(2, value)),
-                                      onPin4Change: (value) =>
-                                          loginOtpBloc.add(UpdatePin(3, value)),
-                                      onPin5Change: (value) =>
-                                          loginOtpBloc.add(UpdatePin(4, value)),
-                                    ),
-                                    const SizedBox(height: 20),
-                                    Container(
-                                      alignment: Alignment.topRight,
-                                      width: double.infinity,
-                                      child: const Text(
-                                        "הקוד הינו חד פעמי ותקף ל3- דקות",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 14),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 20),
-                                  ]),
-                            ),
-                            const SizedBox(height: 40),
-                            SizedBox(
-                              width: baseSize.width * .9,
-                              child: const Text(
-                                  "בהתחברות שלי לאפליקציה אני מאשר אתתנאי השימוש ומדיניות הפרטיות שלהאפליקציה",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white)),
-                            ),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              width: baseSize.width * .6,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFC71D26),
-                                ),
-                                child: const Text(
-                                  "כְּנִיסָה לַמַעֲרֶכֶת",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                onPressed: () {
-                                  final pinCode = state.pinList?.join("") ?? "";
-                                  checkCodeApi(pinCode);
-                                },
-                              ),
-                            ),
-                          ],
+    return BlocConsumer<InputOtpBloc, InputOtpState>(builder: (context, state) {
+      return Directionality(
+        textDirection: TextDirection.rtl,
+        child: Stack(
+          children: [
+            const BackgroundImageScreen(),
+            Scaffold(
+                backgroundColor: Colors.transparent,
+                body: SingleChildScrollView(
+                  child: Center(
+                    child: Column(
+                      children: [
+                        SizedBox(height: baseSize.height * 0.15),
+                        // Logo
+                        Image.asset(
+                          '${Constants.imagePath}/main_logo.png',
+                          width: baseSize.width * 0.7,
+                          height: baseSize.height * 0.13,
                         ),
-                      ),
-                    ))
-              ],
-            ),
-          );
-        },
-        listener: (context, state) {});
+
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 20),
+                          width: baseSize.width * .9,
+                          decoration: BoxDecoration(
+                              color: Colors.black.withAlpha(80),
+                              borderRadius: BorderRadius.circular(7)),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const SizedBox(height: 20),
+                                const Text(
+                                  "הודעת sms שמכילה קוד אימות נשלחה לנייד שלך שמספרו 05X-XXXX120",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 14),
+                                ),
+                                const SizedBox(height: 20),
+                                buildPinField(
+                                  onPin1Change: (value) =>
+                                      inputOtpBloc.add(UpdatePin(0, value)),
+                                  onPin2Change: (value) =>
+                                      inputOtpBloc.add(UpdatePin(1, value)),
+                                  onPin3Change: (value) =>
+                                      inputOtpBloc.add(UpdatePin(2, value)),
+                                  onPin4Change: (value) =>
+                                      inputOtpBloc.add(UpdatePin(3, value)),
+                                  onPin5Change: (value) =>
+                                      inputOtpBloc.add(UpdatePin(4, value)),
+                                ),
+                                const SizedBox(height: 20),
+                                Container(
+                                  alignment: Alignment.topRight,
+                                  width: double.infinity,
+                                  child: const Text(
+                                    "הקוד הינו חד פעמי ותקף ל3- דקות",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 14),
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                              ]),
+                        ),
+                        const SizedBox(height: 40),
+                        SizedBox(
+                          width: baseSize.width * .9,
+                          child: const Text(
+                              "בהתחברות שלי לאפליקציה אני מאשר אתתנאי השימוש ומדיניות הפרטיות שלהאפליקציה",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          width: baseSize.width * .6,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFC71D26),
+                            ),
+                            child: const Text(
+                              "כְּנִיסָה לַמַעֲרֶכֶת",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            onPressed: () {
+                              final pinCode = state.pinList?.join("") ?? "";
+                              checkCodeApi(pinCode);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ))
+          ],
+        ),
+      );
+    }, listener: (context, state) {
+      if (state.isSuccess == true) {
+        context.pushRemoveAll(Routes.mainScreen);
+      }
+    });
   }
 }

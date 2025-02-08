@@ -24,6 +24,7 @@ class LoginWithOtp extends StatefulWidget {
 }
 
 class _LoginWithOtpState extends State<LoginWithOtp> {
+  final List<FocusNode> _focusNode = List.generate(2, (index) => FocusNode());
   String custId = "";
   bool custIdError = false;
   String mobile = "";
@@ -33,7 +34,7 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
   Widget build(BuildContext context) {
     final loginOTPBloc = context.read<LoginOtpBloc>();
 
-    void buttonClickFunction(bool? isSendCodeSuccess) {
+    void buttonClickFunction() {
       setState(() {
         custIdError = custId.isEmpty;
         mobileError = mobile.isEmpty;
@@ -43,19 +44,13 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
         showLoading(context);
       }
 
-      if (isSendCodeSuccess == true) {
-        final param = CheckLoginCodeParam(
-            uniqe_id: Constants.uniqueId, mobile: mobile);
-        context.navigate(Routes.inputOtp, arg: '1hoigyufy');
-      } else {
-        if (custIdError || mobileError) {
-          Fluttertoast.showToast(msg: "All Field is required!");
-          return;
-        }
-
-        loginOTPBloc.add(LoginOtpEvent(SendCodeParam(
-            uniqe_id: Constants.uniqueId, mobile: mobile, custId: custId)));
+      if (custIdError || mobileError) {
+        Fluttertoast.showToast(msg: "All Field is required!");
+        return;
       }
+
+      loginOTPBloc.add(LoginOtpEvent(SendCodeParam(
+          uniqe_id: Constants.uniqueId, mobile: mobile, custId: custId)));
     }
 
     return Directionality(
@@ -71,7 +66,9 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
                   listener: (context, state) {
                 if (state.isLoading == false) hideLoading(context);
                 if (state.isSendCodeSuccess == true) {
-                  context.navigateAndFinish(Routes.inputOtp, );
+                  final param = CheckLoginCodeParam(
+                      uniqe_id: Constants.uniqueId, mobile: mobile);
+                  context.navigate(Routes.inputOtp, arg: param);
                 }
               }, builder: (context, state) {
                 return Column(
@@ -87,6 +84,7 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
                         false,
                         custIdError,
                         isDigitOnly: true,
+                        focusNode: _focusNode[0],
                         onTextChange: (it) {
                           if (it.isNotEmpty && custIdError) {
                             setState(() {
@@ -106,6 +104,7 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
                         false,
                         mobileError,
                         isDigitOnly: true,
+                        focusNode: _focusNode[1],
                         onTextChange: (it) {
                           if (it.isNotEmpty && mobileError) {
                             setState(() {
@@ -136,7 +135,7 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {
-                          buttonClickFunction(state.isSendCodeSuccess);
+                          buttonClickFunction();
                         },
                       ),
                     ),

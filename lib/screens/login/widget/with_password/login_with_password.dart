@@ -46,7 +46,7 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
                   horizontal: 10.0), // Add padding for better spacing
               child: BlocConsumer<LoginPasswordBloc, LoginPasswordState>(
                   listener: (context, state) {
-                if (state.isLoading == false) hideLoading(context);
+                // if (state.isLoading == false) hideLoading(context);
                 if (state.response?.result == 0) {
                   context.navigateAndFinish(Routes.mainScreen);
                 }
@@ -123,7 +123,7 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
                             return;
                           }
 
-                          showLoading(context);
+                          // showLoading(context);
                           loginPasswordBloc.add(LoginPasswordEvent(
                               LoginPasswordParam(
                                   custId: custId,

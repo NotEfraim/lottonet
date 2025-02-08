@@ -53,7 +53,7 @@ void main() {
         ],
         child: MaterialApp(
           title: "Lotto Net",
-          initialRoute: Routes.inputOtp,
+          initialRoute: Routes.loadingScreen,
           routes: {
             Routes.loadingScreen: (context) => const LoadingScreen(),
             Routes.login: (context) => const LoginLayout(),

@@ -13,4 +13,9 @@ extension NavigationExt on BuildContext {
     Navigator.of(this).pushReplacementNamed(routeName, arguments: arg);
     // Navigator.pushReplacementNamed(this, routeName, arguments: arg);
   }
+
+  T? getArgument<T>(){
+     final args = ModalRoute.of(this)?.settings.arguments as T?;
+    return args;
+  }
 }

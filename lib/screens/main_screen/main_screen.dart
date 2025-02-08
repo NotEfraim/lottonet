@@ -201,7 +201,7 @@ class _MainScreenState extends State<MainScreen> {
                               children: [
                                 const Text(
                                   ' צור קשר עם שירות הלקוחות',
-                                  style: TextStyle(color: Colors.white),
+                                  style: TextStyle(color: Colors.white, fontSize: 13),
                                 ),
                                 const Spacer(),
                                 Image.asset(

@@ -50,5 +50,10 @@ class LoginOtpBloc extends Bloc<BaseEvent, LoginOtpState> {
         }
       },
     );
+
+    on<UpdatePin>((event, emit) async{
+      final pinList = state.updateList(event.index, event.value);
+      emit(state.copyWith(pinList: pinList));
+    },);
   }
 }

@@ -11,3 +11,14 @@ class CheckLoginCodeEvent extends BaseEvent {
   final CheckLoginCodeParam param;
   CheckLoginCodeEvent(this.param);
 }
+
+class InitPinList extends BaseEvent {
+  final List<String> pinList;
+  InitPinList(this.pinList);
+}
+
+class UpdatePin extends BaseEvent {
+  final int index;
+  final String value;
+  UpdatePin(this.index, this.value);
+}

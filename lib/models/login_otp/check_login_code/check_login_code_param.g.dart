@@ -9,7 +9,7 @@ part of 'check_login_code_param.dart';
 CheckLoginCodeParam _$CheckLoginCodeParamFromJson(Map<String, dynamic> json) =>
     CheckLoginCodeParam(
       mobile: json['mobile'] as String,
-      code: json['code'] as String,
+      code: json['code'] as String?,
       uniqe_id: json['uniqe_id'] as String,
     );
 

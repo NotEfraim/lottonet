@@ -28,8 +28,6 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
   bool custIdError = false;
   String mobile = "";
   bool mobileError = false;
-  String otp = "";
-  bool otpError = false;
 
   @override
   Widget build(BuildContext context) {
@@ -46,17 +44,9 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
       }
 
       if (isSendCodeSuccess == true) {
-        setState(() {
-          otpError = otp.isEmpty;
-        });
-
-        if (otpError) {
-          Fluttertoast.showToast(msg: "All Field is required!");
-          return;
-        }
-
-        loginOTPBloc.add(CheckLoginCodeEvent(CheckLoginCodeParam(
-            uniqe_id: Constants.uniqueId, mobile: mobile, code: otp)));
+        final param = CheckLoginCodeParam(
+            uniqe_id: Constants.uniqueId, mobile: mobile);
+        context.navigate(Routes.inputOtp, arg: '1hoigyufy');
       } else {
         if (custIdError || mobileError) {
           Fluttertoast.showToast(msg: "All Field is required!");
@@ -80,8 +70,8 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
               child: BlocConsumer<LoginOtpBloc, LoginOtpState>(
                   listener: (context, state) {
                 if (state.isLoading == false) hideLoading(context);
-                if (state.checkOTPSuccess == true) {
-                  context.navigateAndFinish(Routes.mainScreen);
+                if (state.isSendCodeSuccess == true) {
+                  context.navigateAndFinish(Routes.inputOtp, );
                 }
               }, builder: (context, state) {
                 return Column(
@@ -127,26 +117,6 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
                       ),
                     ),
 
-                    //OTP Code
-                    if (state.isSendCodeSuccess == true)
-                      SizedBox(
-                        height: widget.textFieldheight,
-                        width: widget.textFieldwidth,
-                        child: RoundedTextField(
-                          "קוד",
-                          false,
-                          otpError,
-                          isDigitOnly: true,
-                          onTextChange: (it) {
-                            if (it.isNotEmpty && otpError) {
-                              setState(() {
-                                otpError = false;
-                              });
-                            }
-                            otp = it;
-                          },
-                        ),
-                      ),
                     SizedBox(
                       width: widget.textFieldwidth - 20,
                       child: const Text(

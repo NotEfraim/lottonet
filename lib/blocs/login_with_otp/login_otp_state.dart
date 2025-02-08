@@ -4,11 +4,7 @@ class LoginOtpState {
   final String? errorMsg;
   final bool? isSendCodeSuccess;
   final bool? checkOTPSuccess;
-  final String? pin1;
-  final String? pin2;
-  final String? pin3;
-  final String? pin4;
-  final String? pin5;
+  final List<String>? pinList;
 
   LoginOtpState({
     this.isSendCodeSuccess,
@@ -16,12 +12,14 @@ class LoginOtpState {
     this.code,
     this.isLoading,
     this.errorMsg,
-    this.pin1,
-    this.pin2,
-    this.pin3,
-    this.pin4,
-    this.pin5,
+    this.pinList
   });
+
+List<String> updateList(int index, String value) {
+  final newList = List<String>.from(pinList ?? ['','','','','']); // Create a new list copy
+  newList[index] = value; // Update specific index
+  return newList;
+}
 
   LoginOtpState copyWith({
     int? code,
@@ -32,11 +30,8 @@ class LoginOtpState {
     String? inputedMobileNumber,
     String? inputedOTPCode,
     bool? checkOTPSuccess,
-    String? pin1,
-    String? pin2,
-    String? pin3,
-    String? pin4,
-    String? pin5,
+    List<String>? pinList
+    
   }) {
     return LoginOtpState(
         isLoading: isLoading ?? this.isLoading,
@@ -44,11 +39,8 @@ class LoginOtpState {
         code: code ?? this.code,
         isSendCodeSuccess: isSendCodeSuccess ?? this.isSendCodeSuccess,
         checkOTPSuccess: checkOTPSuccess ?? this.checkOTPSuccess,
-        pin1: pin1 ?? this.pin1,
-        pin2: pin2 ?? this.pin2,
-        pin3: pin3 ?? this.pin3,
-        pin4: pin4 ?? this.pin4,
-        pin5: pin5 ?? this.pin5);
+        pinList: pinList ?? this.pinList
+        );
   }
 }
 

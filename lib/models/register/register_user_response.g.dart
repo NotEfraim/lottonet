@@ -11,6 +11,7 @@ RegisterUserResponse _$RegisterUserResponseFromJson(
     RegisterUserResponse(
       json['message'] as String?,
       (json['result'] as num).toInt(),
+      json['token'] as String?,
     );
 
 Map<String, dynamic> _$RegisterUserResponseToJson(
@@ -18,4 +19,5 @@ Map<String, dynamic> _$RegisterUserResponseToJson(
     <String, dynamic>{
       'result': instance.result,
       'message': instance.message,
+      'token': instance.token,
     };

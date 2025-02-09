@@ -4,10 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottonet/blocs/input_otp/input_otp_bloc.dart';
 import 'package:lottonet/blocs/input_otp/input_otp_event.dart';
 import 'package:lottonet/blocs/input_otp/input_otp_state.dart';
+import 'package:lottonet/blocs/loading/loading_bloc.dart';
+import 'package:lottonet/blocs/loading/loading_event.dart';
 import 'package:lottonet/models/login_otp/check_login_code/check_login_code_param.dart';
 import 'package:lottonet/screens/login/widget/background_image_screen.dart';
 import 'package:lottonet/utils/constants.dart';
-import 'package:lottonet/utils/extensions.dart';
 import 'package:lottonet/utils/navigation_ext.dart';
 import 'package:lottonet/utils/routes.dart';
 
@@ -86,11 +87,13 @@ class _InputOtpState extends State<InputOtp> {
   }
 
   void checkCodeApi(String code) {
+    final loadingBloc = context.read<LoadingBloc>();
     final inputOtpBloc = context.read<InputOtpBloc>();
     final args = context.getArgument<CheckLoginCodeParam>();
     if (args == null) return;
     final uniqe_id = args.uniqe_id;
     final mobile = args.mobile;
+    loadingBloc.add(LoadingEventShow());
     inputOtpBloc.add(CheckLoginCodeEvent(
         CheckLoginCodeParam(mobile: mobile, uniqe_id: uniqe_id, code: code)));
   }
@@ -105,6 +108,7 @@ class _InputOtpState extends State<InputOtp> {
 
   @override
   Widget build(BuildContext context) {
+    final loadingBloc = context.read<LoadingBloc>();
     final baseSize = MediaQuery.of(context).size;
     final inputOtpBloc = context.read<InputOtpBloc>();
 
@@ -205,6 +209,9 @@ class _InputOtpState extends State<InputOtp> {
     }, listener: (context, state) {
       if (state.isSuccess == true) {
         context.pushRemoveAll(Routes.mainScreen);
+      }
+      if (state.isLoading == false) {
+        loadingBloc.add(LoadingEventHide());
       }
     });
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottonet/blocs/loading/loading_bloc.dart';
+import 'package:lottonet/blocs/loading/loading_event.dart';
 import 'package:lottonet/blocs/register/register_bloc.dart';
 import 'package:lottonet/blocs/register/register_event.dart';
 import 'package:lottonet/blocs/register/register_state.dart';
@@ -8,8 +10,8 @@ import 'package:lottonet/models/register/register_user_param.dart';
 import 'package:lottonet/screens/login/widget/background_image_screen.dart';
 import 'package:lottonet/screens/login/widget/rounded_text_field.dart';
 import 'package:lottonet/utils/constants.dart';
-import 'package:lottonet/utils/extensions.dart';
 import 'package:lottonet/utils/navigation_ext.dart';
+import 'package:lottonet/utils/routes.dart';
 
 class RegisterLayout extends StatefulWidget {
   const RegisterLayout({super.key});
@@ -36,6 +38,7 @@ class _RegisterLayoutState extends State<RegisterLayout> {
   Widget build(BuildContext context) {
     final baseSize = MediaQuery.of(context).size;
     final registerBloc = context.read<RegisterBloc>();
+    final loadingBloc = context.read<LoadingBloc>();
 
     return Stack(
       children: [
@@ -50,7 +53,9 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                     width: baseSize.width * 0.9,
                     child: BlocConsumer<RegisterBloc, RegisterState>(
                       listener: (context, state) {
-                        if (state.isLoading == false) hideLoading(context);
+                        if (state.isLoading == false) {
+                          loadingBloc.add(LoadingEventHide());
+                        }
                         if (state.response?.result == 0) {
                           context.popBackStack();
                         }
@@ -218,7 +223,7 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                                           return;
                                         }
 
-                                        showLoading(context);
+                                        loadingBloc.add(LoadingEventShow());
                                         registerBloc.add(
                                           RegisterEvent(
                                             RegisterUserParam(

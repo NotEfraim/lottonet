@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottonet/blocs/loading/loading_bloc.dart';
+import 'package:lottonet/blocs/loading/loading_event.dart';
 import 'package:lottonet/blocs/main_screen/main_screen_bloc.dart';
 import 'package:lottonet/blocs/main_screen/main_screen_event.dart';
 import 'package:lottonet/blocs/main_screen/main_screen_state.dart';
@@ -111,11 +113,14 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
 
     final mainScreenBloc = context.read<MainScreenBloc>();
+    final loadingBloc = context.read<LoadingBloc>();
+    loadingBloc.add(LoadingEventShow());
     mainScreenBloc.add(MainScreenEvent());
   }
 
   @override
   Widget build(BuildContext context) {
+    final loadingBloc = context.read<LoadingBloc>();
     final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -235,7 +240,8 @@ class _MainScreenState extends State<MainScreen> {
                     );
                   },
                   listener: (context, state) => {
-                        if (state.isLoading == false) {hideLoading(context)},
+                        if (state.isLoading == false)
+                          {loadingBloc.add(LoadingEventHide())},
                       })),
         ],
       ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottonet/blocs/loading/loading_bloc.dart';
+import 'package:lottonet/blocs/loading/loading_event.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_bloc.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_event.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_state.dart';
@@ -33,6 +35,7 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
   @override
   Widget build(BuildContext context) {
     final loginOTPBloc = context.read<LoginOtpBloc>();
+    final loadingBloc = context.read<LoadingBloc>();
 
     void buttonClickFunction() {
       setState(() {
@@ -41,7 +44,7 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
       });
 
       if (custId.isNotEmpty && mobile.isNotEmpty) {
-        showLoading(context);
+        loadingBloc.add(LoadingEventShow());
       }
 
       if (custIdError || mobileError) {
@@ -64,7 +67,9 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
                   horizontal: 10.0), // Add padding for better spacing
               child: BlocConsumer<LoginOtpBloc, LoginOtpState>(
                   listener: (context, state) {
-                if (state.isLoading == false) hideLoading(context);
+                if (state.isLoading == false) {
+                  loadingBloc.add(LoadingEventHide());
+                }
                 if (state.isSendCodeSuccess == true) {
                   final param = CheckLoginCodeParam(
                       uniqe_id: Constants.uniqueId, mobile: mobile);

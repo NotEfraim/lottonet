@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottonet/blocs/loading/loading_bloc.dart';
+import 'package:lottonet/blocs/loading/loading_event.dart';
 import 'package:lottonet/blocs/login_with_password/login_password_bloc.dart';
 import 'package:lottonet/blocs/login_with_password/login_password_event.dart';
 import 'package:lottonet/blocs/login_with_password/login_password_state.dart';
 import 'package:lottonet/models/login_password/login_password_param.dart';
 import 'package:lottonet/screens/login/widget/rounded_text_field.dart';
 import 'package:lottonet/utils/constants.dart';
-import 'package:lottonet/utils/extensions.dart';
 import 'package:lottonet/utils/navigation_ext.dart';
 import 'package:lottonet/utils/routes.dart';
 
@@ -33,6 +34,7 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
 
   @override
   Widget build(BuildContext context) {
+    final loadingBloc = context.read<LoadingBloc>();
     final loginPasswordBloc = context.read<LoginPasswordBloc>();
 
     return Directionality(
@@ -46,7 +48,8 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
                   horizontal: 10.0), // Add padding for better spacing
               child: BlocConsumer<LoginPasswordBloc, LoginPasswordState>(
                   listener: (context, state) {
-                // if (state.isLoading == false) hideLoading(context);
+                if (state.isLoading == false)
+                  loadingBloc.add(LoadingEventHide());
                 if (state.response?.result == 0) {
                   context.navigateAndFinish(Routes.mainScreen);
                 }
@@ -123,7 +126,7 @@ class _LoginWithPasswordState extends State<LoginWithPassword> {
                             return;
                           }
 
-                          // showLoading(context);
+                          loadingBloc.add(LoadingEventShow());
                           loginPasswordBloc.add(LoginPasswordEvent(
                               LoginPasswordParam(
                                   custId: custId,

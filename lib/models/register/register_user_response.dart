@@ -5,7 +5,8 @@ part 'register_user_response.g.dart';
 
 @JsonSerializable()
 class RegisterUserResponse extends BaseResponse {
-  RegisterUserResponse(super.message, super.result);
+  final String? token;
+  RegisterUserResponse(super.message, super.result, this.token);
 
   factory RegisterUserResponse.fromJson(Map<String, dynamic> json) =>
       _$RegisterUserResponseFromJson(json);

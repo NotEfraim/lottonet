@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:lottonet/screens/loading_dialog/loading_dialog.dart';
+import 'package:lottonet/blocs/loading/loading_bloc.dart';
+import 'package:lottonet/blocs/loading/loading_event.dart';
 
-void showLoading(BuildContext context) async {
-  LoadingDialog.show(context);
+void showLoading(BuildContext context) {
+  // final loadingBloc = context.read<LoadingBloc>();
+  // loadingBloc.add(LoadingEventShow());
 }
 
-void hideLoading(BuildContext context) async {
-  LoadingDialog.hide(context);
-}
-
-void globalDialog(bool? isShow, BuildContext context) {
-  if (isShow == true) {
-    LoadingDialog.show(context);
-  } else {
-    hideLoading(context);
-  }
+void hideLoading(BuildContext context) {
+  // final loadingBloc = context.read<LoadingBloc>();
+  // loadingBloc.add(LoadingEventHide());
 }
 
 extension Utils on int {

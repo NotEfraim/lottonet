@@ -12,7 +12,7 @@ class LoginOtpBloc extends Bloc<BaseEvent, LoginOtpState> {
   LoginOtpBloc(this.sendCodeRepository) : super(LoginOtpStateInitial()) {
     on<LoginOtpEvent>(
       (event, emit) async {
-        emit(state.copyWith(isLoading: true));
+        emit(state.copyWith(isLoading: true, isSendCodeSuccess: false));
         try {
           final response = await sendCodeRepository.sendOTP(event.param);
           HttpLogger("HTTP", "Success");

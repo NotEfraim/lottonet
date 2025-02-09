@@ -113,7 +113,27 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                       builder: (context, state) {
                         return Column(
                           children: [
-                            SizedBox(height: baseSize.height * 0.1),
+                            SizedBox(
+                              width: baseSize.width * .95,
+                              child: Row(
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      context.popBackStack();
+                                    },
+                                    icon: Image.asset(
+                                      '${Constants.imagePath}/right_arrow.png',
+                                      height: 30,
+                                      width: 30,
+                                      fit: BoxFit
+                                          .contain, // Ensure the image scales nicely
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: baseSize.height * 0.02),
                             // Logo
                             Image.asset(
                               '${Constants.imagePath}/main_logo.png',

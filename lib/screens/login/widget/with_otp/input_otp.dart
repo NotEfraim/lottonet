@@ -127,15 +127,39 @@ class _InputOtpState extends State<InputOtp> {
                 backgroundColor: Colors.transparent,
                 body: SingleChildScrollView(
                   child: Center(
+                      child: SafeArea(
                     child: Column(
                       children: [
-                        SizedBox(height: baseSize.height * 0.15),
+                        SizedBox(
+                          width: baseSize.width * .95,
+                          child: Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  context.popBackStack();
+                                },
+                                icon: Image.asset(
+                                  '${Constants.imagePath}/right_arrow.png',
+                                  height: 30,
+                                  width: 30,
+                                  fit: BoxFit
+                                      .contain, // Ensure the image scales nicely
+                                ),
+                              ),
+                              const Spacer(),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: baseSize.height * 0.05),
+
                         // Logo
                         Image.asset(
                           '${Constants.imagePath}/main_logo.png',
                           width: baseSize.width * 0.7,
                           height: baseSize.height * 0.13,
                         ),
+
+                        SizedBox(height: baseSize.height * 0.05),
 
                         Container(
                           padding: const EdgeInsets.symmetric(
@@ -206,7 +230,7 @@ class _InputOtpState extends State<InputOtp> {
                         ),
                       ],
                     ),
-                  ),
+                  )),
                 ))
           ],
         ),

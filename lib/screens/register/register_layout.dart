@@ -9,9 +9,9 @@ import 'package:lottonet/blocs/register/register_state.dart';
 import 'package:lottonet/models/register/register_user_param.dart';
 import 'package:lottonet/screens/login/widget/background_image_screen.dart';
 import 'package:lottonet/screens/login/widget/rounded_text_field.dart';
+import 'package:lottonet/screens/regulations/regulations_widget.dart';
 import 'package:lottonet/utils/constants.dart';
 import 'package:lottonet/utils/navigation_ext.dart';
-import 'package:lottonet/utils/routes.dart';
 
 class RegisterLayout extends StatefulWidget {
   const RegisterLayout({super.key});
@@ -33,6 +33,56 @@ class _RegisterLayoutState extends State<RegisterLayout> {
   bool mobileError = false;
   String password = '';
   bool passwordError = false;
+  bool ageRegulationAccepted = false;
+  bool privacyRegulationAccepted = false;
+
+  void showRegulationDialog(
+      {required Function() onAccept, required String content}) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return RegulationsWidget(acceptFunction: onAccept, content: content);
+        });
+  }
+
+  Color getColor(Set<WidgetState> states) {
+    const Set<WidgetState> interactiveStates = <WidgetState>{
+      WidgetState.pressed,
+      WidgetState.hovered,
+      WidgetState.focused,
+    };
+    if (states.any(interactiveStates.contains)) {
+      return Colors.purple;
+    }
+    return Colors.white;
+  }
+
+  Widget buildRegulations(
+      {required double width,
+      required String text,
+      required bool value,
+      required Function(bool?) onchange}) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Checkbox(
+                fillColor: WidgetStateColor.resolveWith(getColor),
+                checkColor: Colors.purple,
+                value: value,
+                onChanged: (b) {
+                  onchange(b);
+                }),
+            Text(
+              maxLines: 2,
+              text,
+              style: const TextStyle(color: Colors.white, fontSize: 12),
+            ),
+          ],
+        )
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +113,7 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                       builder: (context, state) {
                         return Column(
                           children: [
-                            SizedBox(height: baseSize.height * 0.05),
+                            SizedBox(height: baseSize.height * 0.1),
                             // Logo
                             Image.asset(
                               '${Constants.imagePath}/main_logo.png',
@@ -189,6 +239,39 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                                       },
                                     ),
                                   ),
+
+                                  buildRegulations(
+                                      width: baseSize.width * 8,
+                                      text:
+                                          " אני מאשר את התקנון, תנאי השימוש ושאני מעל גיל 18",
+                                      value: ageRegulationAccepted,
+                                      onchange: (b) {
+                                        showRegulationDialog(
+                                            onAccept: () {
+                                              setState(() {
+                                                ageRegulationAccepted = true;
+                                              });
+                                            },
+                                            content:
+                                                Constants.ageRegulationContent);
+                                      }),
+
+                                  buildRegulations(
+                                      width: baseSize.width * 8,
+                                      text: " אני מאשר לקבל עדכונים ",
+                                      value: privacyRegulationAccepted,
+                                      onchange: (b) {
+                                        showRegulationDialog(
+                                            onAccept: () {
+                                              setState(() {
+                                                privacyRegulationAccepted =
+                                                    true;
+                                              });
+                                            },
+                                            content: Constants
+                                                .privacyRegulationText);
+                                      }),
+
                                   const SizedBox(height: 20),
                                   SizedBox(
                                     width: baseSize.width * .6,
@@ -202,6 +285,14 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                                         style: TextStyle(color: Colors.white),
                                       ),
                                       onPressed: () {
+                                        if (!privacyRegulationAccepted ||
+                                            !ageRegulationAccepted) {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  'תחילה עליך לקבל את התנאים וההגבלות!');
+                                          return;
+                                        }
+
                                         setState(() {
                                           custIdError = custId.isEmpty;
                                           firstNameError = firstName.isEmpty;

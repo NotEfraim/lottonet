@@ -10,7 +10,6 @@ import 'package:lottonet/models/login_otp/check_login_code/check_login_code_para
 import 'package:lottonet/models/login_otp/send_code/send_code_param.dart';
 import 'package:lottonet/screens/login/widget/rounded_text_field.dart';
 import 'package:lottonet/utils/constants.dart';
-import 'package:lottonet/utils/extensions.dart';
 import 'package:lottonet/utils/navigation_ext.dart';
 import 'package:lottonet/utils/routes.dart';
 

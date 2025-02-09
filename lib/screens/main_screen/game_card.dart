@@ -17,8 +17,6 @@ class GameCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-
     // Padding to be reused
     const padding = EdgeInsets.only(left: 15, top: 10);
 

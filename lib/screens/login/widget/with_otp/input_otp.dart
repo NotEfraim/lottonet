@@ -22,13 +22,15 @@ class InputOtp extends StatefulWidget {
 class _InputOtpState extends State<InputOtp> {
   final List<FocusNode> _focusNode = List.generate(5, (index) => FocusNode());
   int currentFocusedIndex = 0;
+  String mobile = '';
+  String uniqe_id = '';
 
   Widget buildPin(int index, Function(String) onValueChanged) {
     return Expanded(
       flex: 1,
       child: TextField(
-        keyboardType: TextInputType.number,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        // keyboardType: TextInputType.number,
+        // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         focusNode: _focusNode[index],
         maxLines: 1,
         maxLength: 1,
@@ -89,10 +91,7 @@ class _InputOtpState extends State<InputOtp> {
   void checkCodeApi(String code) {
     final loadingBloc = context.read<LoadingBloc>();
     final inputOtpBloc = context.read<InputOtpBloc>();
-    final args = context.getArgument<CheckLoginCodeParam>();
-    if (args == null) return;
-    final uniqe_id = args.uniqe_id;
-    final mobile = args.mobile;
+    if (uniqe_id.isEmpty || mobile.isEmpty) return;
     loadingBloc.add(LoadingEventShow());
     inputOtpBloc.add(CheckLoginCodeEvent(
         CheckLoginCodeParam(mobile: mobile, uniqe_id: uniqe_id, code: code)));
@@ -111,6 +110,12 @@ class _InputOtpState extends State<InputOtp> {
     final loadingBloc = context.read<LoadingBloc>();
     final baseSize = MediaQuery.of(context).size;
     final inputOtpBloc = context.read<InputOtpBloc>();
+
+    final args = context.getArgument<CheckLoginCodeParam>();
+    if (args != null) {
+      uniqe_id = args.uniqe_id;
+      mobile = args.mobile;
+    }
 
     return BlocConsumer<InputOtpBloc, InputOtpState>(builder: (context, state) {
       return Directionality(
@@ -143,9 +148,9 @@ class _InputOtpState extends State<InputOtp> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const SizedBox(height: 20),
-                                const Text(
-                                  "הודעת sms שמכילה קוד אימות נשלחה לנייד שלך שמספרו 05X-XXXX120",
-                                  style: TextStyle(
+                                Text(
+                                  "הודעת SMS המכילה קוד אימות נשלחה למספר הנייד שלך $mobile",
+                                  style: const TextStyle(
                                       color: Colors.white, fontSize: 14),
                                 ),
                                 const SizedBox(height: 20),

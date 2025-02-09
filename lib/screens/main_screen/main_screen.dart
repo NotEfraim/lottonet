@@ -27,7 +27,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   Duration getRemainingTime(String time) {
-    final targetDate = DateTime.parse('2025-02-08T20:15:00.000Z');
+    final targetDate = DateTime.parse(time);
     final currentDate = DateTime.now();
 
     // If the target date is after the current date, return the difference

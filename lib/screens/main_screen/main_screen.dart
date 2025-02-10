@@ -39,10 +39,6 @@ class _MainScreenState extends State<MainScreen> {
     return Duration.zero;
   }
 
-  Future<void> logout() async {
-    saveData(Constants.tokenKey, '');
-  }
-
   Widget buildGameCards(MainScreenState state) {
     if (state.response == null) return Container();
     return // Wrap GameCards inside SingleChildScrollView to make them scrollable
@@ -183,10 +179,7 @@ class _MainScreenState extends State<MainScreen> {
                                   width: 40,
                                 ),
                                 onPressed: () {
-                                  activeToken = '';
-                                  logout();
-                                  Fluttertoast.showToast(msg: 'Logged out');
-                                  context.pushRemoveAll(Routes.login);
+                                  context.navigate(Routes.profileNavigation);
                                 },
                               ),
                             ],

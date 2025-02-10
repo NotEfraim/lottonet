@@ -4,4 +4,5 @@ class Routes {
   static const String loadingScreen = '/splash';
   static const String mainScreen = '/main';
   static const String inputOtp = '/input_otp';
+  static const String profileNavigation = '/profile_navigation';
 }

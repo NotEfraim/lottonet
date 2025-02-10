@@ -18,6 +18,7 @@ import 'package:lottonet/screens/loading_screen/loading_screen.dart';
 import 'package:lottonet/screens/login/login_layout.dart';
 import 'package:lottonet/screens/login/widget/with_otp/input_otp.dart';
 import 'package:lottonet/screens/main_screen/main_screen.dart';
+import 'package:lottonet/screens/profile_navigation/profile_navigation.dart';
 import 'package:lottonet/screens/register/register_layout.dart';
 import 'package:lottonet/utils/routes.dart';
 
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
           Routes.register: (context) => const RegisterLayout(),
           Routes.mainScreen: (context) => const MainScreen(),
           Routes.inputOtp: (context) => const InputOtp(),
+          Routes.profileNavigation: (context) => const ProfileNavigation()
         },
         builder: (context, child) {
           return Stack(

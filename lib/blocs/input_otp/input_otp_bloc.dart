@@ -14,7 +14,8 @@ class InputOtpBloc extends Bloc<BaseEvent, InputOtpState> {
   InputOtpBloc(this.checkLoginCodeRepository) : super(InputOtpInitState()) {
     on<CheckLoginCodeEvent>(
       (event, emit) async {
-        emit(state.copyWith(isLoading: true));
+        emit(state.copyWith(
+            isLoading: true, isSuccess: false, pinList: ['', '', '', '', '']));
         try {
           final response =
               await checkLoginCodeRepository.checkLoginOTP(event.param);

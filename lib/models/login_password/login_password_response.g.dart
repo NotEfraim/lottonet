@@ -10,7 +10,7 @@ LoginPasswordResponse _$LoginPasswordResponseFromJson(
         Map<String, dynamic> json) =>
     LoginPasswordResponse(
       json['message'] as String?,
-      (json['result'] as num).toInt(),
+      (json['result'] as num?)?.toInt(),
       json['token'] as String?,
     );
 

@@ -9,7 +9,7 @@ part of 'main_screen_response.dart';
 MainScreenResponse _$MainScreenResponseFromJson(Map<String, dynamic> json) =>
     MainScreenResponse(
       json['message'] as String?,
-      (json['result'] as num).toInt(),
+      (json['result'] as num?)?.toInt(),
       (json['balance'] as num).toInt(),
       ScreenGameData.fromJson(json['data'] as Map<String, dynamic>),
     );

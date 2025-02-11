@@ -5,6 +5,7 @@ import 'package:lottonet/blocs/loading/loading_event.dart';
 import 'package:lottonet/blocs/main_screen/main_screen_bloc.dart';
 import 'package:lottonet/blocs/main_screen/main_screen_event.dart';
 import 'package:lottonet/blocs/main_screen/main_screen_state.dart';
+import 'package:lottonet/main.dart';
 import 'package:lottonet/models/game_card/game_card_model.dart';
 import 'package:lottonet/screens/login/widget/background_image_screen.dart';
 import 'package:lottonet/screens/main_screen/game_card.dart';
@@ -133,6 +134,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget buildBalance(String balance) {
+    currentBalance = balance;
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(

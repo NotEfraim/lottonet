@@ -10,7 +10,7 @@ CheckLoginCodeResponse _$CheckLoginCodeResponseFromJson(
         Map<String, dynamic> json) =>
     CheckLoginCodeResponse(
       json['message'] as String?,
-      (json['result'] as num).toInt(),
+      (json['result'] as num?)?.toInt(),
       json['token'] as String?,
     );
 

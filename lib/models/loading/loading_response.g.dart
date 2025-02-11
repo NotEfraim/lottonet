@@ -9,7 +9,7 @@ part of 'loading_response.dart';
 LoadingResponse _$LoadingResponseFromJson(Map<String, dynamic> json) =>
     LoadingResponse(
       json['message'] as String?,
-      (json['result'] as num).toInt(),
+      (json['result'] as num?)?.toInt(),
       json['token'] as String?,
     );
 

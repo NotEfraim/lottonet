@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottonet/blocs/loading/loading_bloc.dart';
+import 'package:lottonet/blocs/loading/loading_event.dart';
+import 'package:lottonet/blocs/profile/get_customer_data_bloc.dart';
+import 'package:lottonet/blocs/profile/get_customer_event.dart';
+import 'package:lottonet/blocs/profile/get_customer_state.dart';
+import 'package:lottonet/main.dart';
 import 'package:lottonet/screens/login/widget/rounded_text_field.dart';
 import 'package:lottonet/screens/widget_utils/common_app_bar.dart';
 import 'package:lottonet/screens/widget_utils/widget_exrensions.dart';
@@ -147,90 +154,108 @@ class _PersonalDataState extends State<PersonalData> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    final loadingBloc = context.read<LoadingBloc>();
+    loadingBloc.add(LoadingEventShow());
+    final getCustomerDataBloc = context.read<GetCustomerDataBloc>();
+    getCustomerDataBloc.add(GetCustomerEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final loadingBloc = context.read<LoadingBloc>();
     final baseSize = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: const Color.fromRGBO(36, 13, 83, 0.88),
-      appBar: PreferredSize(
-          preferredSize: const Size(40, 40),
-          child: CommonAppBar(
-            title: "אזור אישי",
-            backgroundColor: Colors.transparent,
-            rightIcon: IconButton(
-                onPressed: () {
-                  context.popBackStack();
-                },
-                icon: Image.asset(
-                  '${Constants.imagePath}/right_arrow.png',
-                )),
-          )),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Stack(
-          children: [
-            Center(
-              child: SizedBox(
-                width: baseSize.width * .8,
-                height: baseSize.height * .7,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        '${Constants.imagePath}/profile_image.png',
-                        height: baseSize.width * .4,
-                        width: baseSize.width * .4,
+    return BlocConsumer<GetCustomerDataBloc, GetCustomerState>(
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: const Color.fromRGBO(36, 13, 83, 0.88),
+          appBar: PreferredSize(
+              preferredSize: const Size(40, 40),
+              child: CommonAppBar(
+                title: "אזור אישי",
+                backgroundColor: Colors.transparent,
+                rightIcon: IconButton(
+                    onPressed: () {
+                      context.popBackStack();
+                    },
+                    icon: Image.asset(
+                      '${Constants.imagePath}/right_arrow.png',
+                    )),
+              )),
+          body: Directionality(
+            textDirection: TextDirection.rtl,
+            child: Stack(
+              children: [
+                Center(
+                  child: SizedBox(
+                    width: baseSize.width * .8,
+                    height: baseSize.height * .7,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Image.asset(
+                            '${Constants.imagePath}/profile_image.png',
+                            height: baseSize.width * .4,
+                            width: baseSize.width * .4,
+                          ),
+                          buildInputFields(
+                              baseSize: baseSize,
+                              label: 'שם מלא:',
+                              isError: false,
+                              digitsOnly: false,
+                              defaultValue: state.response?.firstName ?? ''),
+                          buildInputFields(
+                              baseSize: baseSize,
+                              label: 'שם משפחה:',
+                              isError: false,
+                              digitsOnly: false,
+                              defaultValue: state.response?.lastName ?? ''),
+                          buildInputFields(
+                              baseSize: baseSize,
+                              label: 'גיל:',
+                              isError: false,
+                              digitsOnly: false,
+                              defaultValue:
+                                  state.response?.age.toString() ?? ''),
+                          buildInputFields(
+                              baseSize: baseSize,
+                              label: 'טלפון נייד:',
+                              isError: false,
+                              digitsOnly: false,
+                              defaultValue: state.response?.mobile ?? ''),
+                          buildInputFields(
+                              baseSize: baseSize,
+                              label: 'תעודת זהות:',
+                              isError: false,
+                              digitsOnly: false,
+                              defaultValue: state.response?.custId ?? ''),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          commonRoundedButton(
+                              width: baseSize.width * .4,
+                              backgroundColor: const Color(0xffC71D26),
+                              textColor: Colors.white,
+                              text: 'בצע תשלום',
+                              onClick: () {})
+                        ],
                       ),
-                      buildInputFields(
-                          baseSize: baseSize,
-                          label: 'שם מלא:',
-                          isError: false,
-                          digitsOnly: false,
-                          defaultValue: ''),
-                      buildInputFields(
-                          baseSize: baseSize,
-                          label: 'שם משפחה:',
-                          isError: false,
-                          digitsOnly: false,
-                          defaultValue: ''),
-                      buildInputFields(
-                          baseSize: baseSize,
-                          label: 'גיל:',
-                          isError: false,
-                          digitsOnly: false,
-                          defaultValue: ''),
-                      buildInputFields(
-                          baseSize: baseSize,
-                          label: 'טלפון נייד:',
-                          isError: false,
-                          digitsOnly: false,
-                          defaultValue: ''),
-                      buildInputFields(
-                          baseSize: baseSize,
-                          label: 'תעודת זהות:',
-                          isError: false,
-                          digitsOnly: false,
-                          defaultValue: ''),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      commonRoundedButton(
-                          width: baseSize.width * .4,
-                          backgroundColor: const Color(0xffC71D26),
-                          textColor: Colors.white,
-                          text: 'בצע תשלום',
-                          onClick: () {})
-                    ],
+                    ),
                   ),
                 ),
-              ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: buildBalance(currentBalance),
+                )
+              ],
             ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: buildBalance("200"),
-            )
-          ],
-        ),
-      ),
+          ),
+        );
+      },
+      listener: (context, state) {
+        if (state.isLoading == false) loadingBloc.add(LoadingEventHide());
+      },
     );
   }
 }

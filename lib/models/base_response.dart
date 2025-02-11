@@ -4,7 +4,7 @@ part 'base_response.g.dart';
 
 @JsonSerializable()
 class BaseResponse {
-  final int result;
+  final int? result;
   final String? message;
 
   BaseResponse(this.message, this.result);

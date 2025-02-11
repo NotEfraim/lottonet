@@ -207,7 +207,7 @@ class _InputOtpState extends State<InputOtp> {
                         SizedBox(
                           width: baseSize.width * .9,
                           child: const Text(
-                              "בהתחברות שלי לאפליקציה אני מאשר אתתנאי השימוש ומדיניות הפרטיות שלהאפליקציה",
+                              "בהתחברות שלי לאפליקציה אני מאשר את תנאי השימוש ואת מדיניות הפרטיות של האפליקציה",
                               textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.white)),
                         ),

@@ -10,9 +10,11 @@ class LoadingDialog {
         backgroundColor: Colors.transparent, // Transparent background
         elevation: 0,
         child: Center(
-          child: LoadingAnimationWidget.inkDrop(
-            color: Colors.white,
-            size: 40, // Increased size for better visibility
+          child: SafeArea(
+            child: LoadingAnimationWidget.inkDrop(
+              color: Colors.white,
+              size: 40, // Increased size for better visibility
+            ),
           ),
         ),
       ),

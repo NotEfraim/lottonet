@@ -99,8 +99,7 @@ class _RegisterLayoutState extends State<RegisterLayout> {
               backgroundColor: Colors.transparent,
               body: Center(
                 child: SizedBox(
-                    height: baseSize.height * 0.9,
-                    width: baseSize.width * 0.9,
+                    width: baseSize.width * 0.85,
                     child: BlocConsumer<RegisterBloc, RegisterState>(
                       listener: (context, state) {
                         if (state.isLoading == false) {
@@ -111,262 +110,267 @@ class _RegisterLayoutState extends State<RegisterLayout> {
                         }
                       },
                       builder: (context, state) {
-                        return Column(
-                          children: [
-                            SizedBox(
-                              width: baseSize.width * .95,
-                              child: Row(
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      context.popBackStack();
-                                    },
-                                    icon: Image.asset(
-                                      '${Constants.imagePath}/right_arrow.png',
-                                      height: 30,
-                                      width: 30,
-                                      fit: BoxFit
-                                          .contain, // Ensure the image scales nicely
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: baseSize.height * 0.02),
-                            // Logo
-                            Image.asset(
-                              '${Constants.imagePath}/main_logo.png',
-                              width: baseSize.width * 0.7,
-                              height: baseSize.height * 0.13,
-                            ),
-
-                            Expanded(
-                                child: SingleChildScrollView(
-                                    child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Column(
-                                children: [
-                                  // ID
-                                  SizedBox(
-                                    height: baseSize.height * .09,
-                                    width: baseSize.width * .8,
-                                    child: RoundedTextField(
-                                      "תעודת זהות",
-                                      false,
-                                      custIdError,
-                                      isDigitOnly: false,
-                                      onTextChange: (it) {
-                                        if (it.isNotEmpty && custIdError) {
-                                          custIdError = false;
-                                        }
-                                        custId = it;
-                                      },
-                                    ),
-                                  ),
-                                  // First Name
-                                  SizedBox(
-                                    height: baseSize.height * .09,
-                                    width: baseSize.width * .8,
-                                    child: RoundedTextField(
-                                      "שם",
-                                      false,
-                                      firstNameError,
-                                      isDigitOnly: false,
-                                      onTextChange: (it) {
-                                        if (it.isNotEmpty && firstNameError) {
-                                          setState(() {
-                                            firstNameError = false;
-                                          });
-                                        }
-                                        firstName = it;
-                                      },
-                                    ),
-                                  ),
-                                  // Last Name
-                                  SizedBox(
-                                    height: baseSize.height * .09,
-                                    width: baseSize.width * .8,
-                                    child: RoundedTextField(
-                                      "שם משפחה",
-                                      false,
-                                      lastNameError,
-                                      isDigitOnly: false,
-                                      onTextChange: (it) {
-                                        if (it.isNotEmpty && lastNameError) {
-                                          setState(() {
-                                            lastNameError = false;
-                                          });
-                                        }
-                                        lastName = it;
-                                      },
-                                    ),
-                                  ),
-                                  //Age
-                                  SizedBox(
-                                    height: baseSize.height * .09,
-                                    width: baseSize.width * .8,
-                                    child: RoundedTextField(
-                                      "גיל",
-                                      false,
-                                      ageError,
-                                      isDigitOnly: true,
-                                      onTextChange: (it) {
-                                        if (it.isNotEmpty && ageError) {
-                                          setState(() {
-                                            ageError = false;
-                                          });
-                                        }
-                                        age = int.parse(it);
-                                      },
-                                    ),
-                                  ),
-                                  // Mobile Phone
-                                  SizedBox(
-                                    height: baseSize.height * .09,
-                                    width: baseSize.width * .8,
-                                    child: RoundedTextField(
-                                      "טלפון נייד",
-                                      false,
-                                      mobileError,
-                                      isDigitOnly: true,
-                                      onTextChange: (it) {
-                                        if (it.isNotEmpty && mobileError) {
-                                          setState(() {
-                                            mobileError = false;
-                                          });
-                                        }
-                                        mobile = it;
-                                      },
-                                    ),
-                                  ),
-                                  // Password
-                                  SizedBox(
-                                    height: baseSize.height * .09,
-                                    width: baseSize.width * .8,
-                                    child: RoundedTextField(
-                                      "סיסמא",
-                                      true,
-                                      passwordError,
-                                      isDigitOnly: false,
-                                      onTextChange: (it) {
-                                        if (it.isNotEmpty && passwordError) {
-                                          setState(() {
-                                            passwordError = false;
-                                          });
-                                        }
-                                        password = it;
-                                      },
-                                    ),
-                                  ),
-
-                                  buildRegulations(
-                                      width: baseSize.width * 8,
-                                      text:
-                                          " אני מאשר את התקנון, תנאי השימוש ושאני מעל גיל 18",
-                                      value: ageRegulationAccepted,
-                                      onchange: (b) {
-                                        showRegulationDialog(
-                                            onAccept: () {
-                                              setState(() {
-                                                ageRegulationAccepted = true;
-                                              });
-                                            },
-                                            content:
-                                                Constants.ageRegulationContent);
-                                      }),
-
-                                  buildRegulations(
-                                      width: baseSize.width * 8,
-                                      text: " אני מאשר לקבל עדכונים ",
-                                      value: privacyRegulationAccepted,
-                                      onchange: (b) {
-                                        showRegulationDialog(
-                                            onAccept: () {
-                                              setState(() {
-                                                privacyRegulationAccepted =
-                                                    true;
-                                              });
-                                            },
-                                            content: Constants
-                                                .privacyRegulationText);
-                                      }),
-
-                                  const SizedBox(height: 20),
-                                  SizedBox(
-                                    width: baseSize.width * .6,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            const Color(0xFFC71D26),
-                                      ),
-                                      child: const Text(
-                                        "כְּנִיסָה לַמַעֲרֶכֶת",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
+                        return SafeArea(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                width: baseSize.width * .95,
+                                child: Row(
+                                  children: [
+                                    IconButton(
                                       onPressed: () {
-                                        if (!privacyRegulationAccepted ||
-                                            !ageRegulationAccepted) {
-                                          Fluttertoast.showToast(
-                                              msg:
-                                                  'תחילה עליך לקבל את התנאים וההגבלות!');
-                                          return;
-                                        }
-
-                                        setState(() {
-                                          custIdError = custId.isEmpty;
-                                          firstNameError = firstName.isEmpty;
-                                          lastNameError = lastName.isEmpty;
-                                          ageError = (age.toString()).isEmpty ||
-                                              age == -1;
-                                          mobileError = mobile.isEmpty;
-                                          passwordError = password.isEmpty;
-                                        });
-
-                                        if (custIdError ||
-                                            firstNameError ||
-                                            lastNameError ||
-                                            ageError ||
-                                            mobileError ||
-                                            passwordError) {
-                                          Fluttertoast.showToast(
-                                              msg: "All fields is required!");
-                                          return;
-                                        }
-
-                                        loadingBloc.add(LoadingEventShow());
-                                        registerBloc.add(
-                                          RegisterEvent(
-                                            RegisterUserParam(
-                                                custId,
-                                                firstName,
-                                                lastName,
-                                                age,
-                                                mobile,
-                                                password,
-                                                Constants.uniqueId),
-                                          ),
-                                        );
+                                        context.popBackStack();
                                       },
+                                      icon: Image.asset(
+                                        '${Constants.imagePath}/right_arrow.png',
+                                        height: 30,
+                                        width: 30,
+                                        fit: BoxFit
+                                            .contain, // Ensure the image scales nicely
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 5),
-
-                                  SizedBox(
-                                      width: baseSize.width * .8,
-                                      child: TextButton(
-                                        onPressed: () {
-                                          context.popBackStack();
-                                        },
-                                        child: const Text("מנרשמת בעבר? כניסה",
-                                            textAlign: TextAlign.center,
-                                            style:
-                                                TextStyle(color: Colors.white)),
-                                      )),
-                                ],
+                                    const Spacer(),
+                                  ],
+                                ),
                               ),
-                            )))
-                          ],
+                              SizedBox(height: baseSize.height * 0.02),
+                              // Logo
+                              Image.asset(
+                                '${Constants.imagePath}/main_logo.png',
+                                width: baseSize.width * 0.7,
+                                height: baseSize.height * 0.13,
+                              ),
+
+                              Expanded(
+                                  child: SingleChildScrollView(
+                                      child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: Column(
+                                  children: [
+                                    // First Name
+                                    SizedBox(
+                                      height: baseSize.height * .09,
+                                      width: baseSize.width * .8,
+                                      child: RoundedTextField(
+                                        "שם מלא",
+                                        false,
+                                        firstNameError,
+                                        isDigitOnly: false,
+                                        onTextChange: (it) {
+                                          if (it.isNotEmpty && firstNameError) {
+                                            setState(() {
+                                              firstNameError = false;
+                                            });
+                                          }
+                                          firstName = it;
+                                        },
+                                      ),
+                                    ),
+                                    // Last Name
+                                    SizedBox(
+                                      height: baseSize.height * .09,
+                                      width: baseSize.width * .8,
+                                      child: RoundedTextField(
+                                        "שם משפחה",
+                                        false,
+                                        lastNameError,
+                                        isDigitOnly: false,
+                                        onTextChange: (it) {
+                                          if (it.isNotEmpty && lastNameError) {
+                                            setState(() {
+                                              lastNameError = false;
+                                            });
+                                          }
+                                          lastName = it;
+                                        },
+                                      ),
+                                    ),
+                                    //Age
+                                    SizedBox(
+                                      height: baseSize.height * .09,
+                                      width: baseSize.width * .8,
+                                      child: RoundedTextField(
+                                        "גיל",
+                                        false,
+                                        ageError,
+                                        isDigitOnly: true,
+                                        onTextChange: (it) {
+                                          if (it.isNotEmpty && ageError) {
+                                            setState(() {
+                                              ageError = false;
+                                            });
+                                          }
+                                          age = int.parse(it);
+                                        },
+                                      ),
+                                    ),
+                                    // Mobile Phone
+                                    SizedBox(
+                                      height: baseSize.height * .09,
+                                      width: baseSize.width * .8,
+                                      child: RoundedTextField(
+                                        "טלפון נייד",
+                                        false,
+                                        mobileError,
+                                        isDigitOnly: true,
+                                        onTextChange: (it) {
+                                          if (it.isNotEmpty && mobileError) {
+                                            setState(() {
+                                              mobileError = false;
+                                            });
+                                          }
+                                          mobile = it;
+                                        },
+                                      ),
+                                    ),
+                                    // ID
+                                    SizedBox(
+                                      height: baseSize.height * .09,
+                                      width: baseSize.width * .8,
+                                      child: RoundedTextField(
+                                        "תעודת זהות",
+                                        false,
+                                        custIdError,
+                                        isDigitOnly: false,
+                                        onTextChange: (it) {
+                                          if (it.isNotEmpty && custIdError) {
+                                            custIdError = false;
+                                          }
+                                          custId = it;
+                                        },
+                                      ),
+                                    ),
+                                    // Password
+                                    SizedBox(
+                                      height: baseSize.height * .09,
+                                      width: baseSize.width * .8,
+                                      child: RoundedTextField(
+                                        "סיסמא",
+                                        true,
+                                        passwordError,
+                                        isDigitOnly: false,
+                                        onTextChange: (it) {
+                                          if (it.isNotEmpty && passwordError) {
+                                            setState(() {
+                                              passwordError = false;
+                                            });
+                                          }
+                                          password = it;
+                                        },
+                                      ),
+                                    ),
+
+                                    buildRegulations(
+                                        width: baseSize.width * 8,
+                                        text:
+                                            " אני מאשר את התקנון, תנאי השימוש ושאני מעל גיל 18",
+                                        value: ageRegulationAccepted,
+                                        onchange: (b) {
+                                          showRegulationDialog(
+                                              onAccept: () {
+                                                setState(() {
+                                                  ageRegulationAccepted = true;
+                                                });
+                                              },
+                                              content: Constants
+                                                  .ageRegulationContent);
+                                        }),
+
+                                    buildRegulations(
+                                        width: baseSize.width * 8,
+                                        text: " אני מאשר לקבל עדכונים ",
+                                        value: privacyRegulationAccepted,
+                                        onchange: (b) {
+                                          showRegulationDialog(
+                                              onAccept: () {
+                                                setState(() {
+                                                  privacyRegulationAccepted =
+                                                      true;
+                                                });
+                                              },
+                                              content: Constants
+                                                  .privacyRegulationText);
+                                        }),
+
+                                    const SizedBox(height: 20),
+                                    SizedBox(
+                                      width: baseSize.width * .6,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFFC71D26),
+                                        ),
+                                        child: const Text(
+                                          "כְּנִיסָה לַמַעֲרֶכֶת",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        onPressed: () {
+                                          if (!privacyRegulationAccepted ||
+                                              !ageRegulationAccepted) {
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    'תחילה עליך לקבל את התנאים וההגבלות!');
+                                            return;
+                                          }
+
+                                          setState(() {
+                                            custIdError = custId.isEmpty;
+                                            firstNameError = firstName.isEmpty;
+                                            lastNameError = lastName.isEmpty;
+                                            ageError =
+                                                (age.toString()).isEmpty ||
+                                                    age == -1;
+                                            mobileError = mobile.isEmpty;
+                                            passwordError = password.isEmpty;
+                                          });
+
+                                          if (custIdError ||
+                                              firstNameError ||
+                                              lastNameError ||
+                                              ageError ||
+                                              mobileError ||
+                                              passwordError) {
+                                            Fluttertoast.showToast(
+                                                msg: "All fields is required!");
+                                            return;
+                                          }
+
+                                          loadingBloc.add(LoadingEventShow());
+                                          registerBloc.add(
+                                            RegisterEvent(
+                                              RegisterUserParam(
+                                                  custId,
+                                                  firstName,
+                                                  lastName,
+                                                  age,
+                                                  mobile,
+                                                  password,
+                                                  Constants.uniqueId),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+
+                                    SizedBox(
+                                        width: baseSize.width * .8,
+                                        child: TextButton(
+                                          onPressed: () {
+                                            context.popBackStack();
+                                          },
+                                          child: const Text(
+                                              "מנרשמת בעבר? כניסה",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                        )),
+                                  ],
+                                ),
+                              )))
+                            ],
+                          ),
                         );
                       },
                     )),

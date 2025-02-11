@@ -123,7 +123,7 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
                     SizedBox(
                       width: widget.textFieldwidth - 20,
                       child: const Text(
-                          "בהתחברות שלי לאפליקציה אני מאשר אתתנאי השימוש ומדיניות הפרטיות שלהאפליקציה",
+                          "בהתחברות שלי לאפליקציה אני מאשר את תנאי השימוש ואת מדיניות הפרטיות של האפליקציה",
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.white)),
                     ),
@@ -135,7 +135,7 @@ class _LoginWithOtpState extends State<LoginWithOtp> {
                           backgroundColor: const Color(0xFFC71D26),
                         ),
                         child: const Text(
-                          "כְּנִיסָה לַמַעֲרֶכֶת",
+                          "התחברות",
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {

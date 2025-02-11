@@ -1,14 +1,10 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottonet/blocs/loading/loading_bloc.dart';
 import 'package:lottonet/blocs/loading/loading_event.dart';
 import 'package:lottonet/blocs/main_screen/main_screen_bloc.dart';
 import 'package:lottonet/blocs/main_screen/main_screen_event.dart';
 import 'package:lottonet/blocs/main_screen/main_screen_state.dart';
-import 'package:lottonet/main.dart';
 import 'package:lottonet/models/game_card/game_card_model.dart';
 import 'package:lottonet/screens/login/widget/background_image_screen.dart';
 import 'package:lottonet/screens/main_screen/game_card.dart';
@@ -16,7 +12,6 @@ import 'package:lottonet/utils/constants.dart';
 import 'package:lottonet/utils/extensions.dart';
 import 'package:lottonet/utils/navigation_ext.dart';
 import 'package:lottonet/utils/routes.dart';
-import 'package:lottonet/utils/shared_pref.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -26,6 +21,17 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  // void openWhatsApp(String phoneNumber) async {
+  //   final url = Uri.parse(
+  //       "https://wa.me/$phoneNumber"); // פורמט תקין ל-WhatsApp deep link
+  //   if (await canLaunchUrl(url)) {
+  //     await launchUrl(url, mode: LaunchMode.externalApplication);
+  //   } else {
+  //     print('error');
+  //     throw "לא ניתן לפתוח את WhatsApp";
+  //   }
+  // }
+
   Duration getRemainingTime(String time) {
     final targetDate = DateTime.parse(time);
     final currentDate = DateTime.now();
@@ -78,7 +84,7 @@ class _MainScreenState extends State<MainScreen> {
                 GameCardModel(
                     prize: '${state.response?.data.prise123}',
                     day: 'פעמים ביום עד',
-                    gameName: 'לוטו',
+                    gameName: '123',
                     duration:
                         getRemainingTime(state.response?.data.date123 ?? '')),
                 cardColor: const Color(0xffE46720),
@@ -90,7 +96,7 @@ class _MainScreenState extends State<MainScreen> {
               child: GameCard(
                 GameCardModel(
                     prize: '${state.response?.data.chancePrise}',
-                    day: 'כל שעתיים עד',
+                    day: 'כל שעתיים עד ',
                     gameName: 'צאנס',
                     duration: getRemainingTime(
                         state.response?.data.chanceDate ?? '')),
@@ -201,33 +207,29 @@ class _MainScreenState extends State<MainScreen> {
 
                         const SizedBox(height: 20), // Spacing for countdown
 
-                        Container(
-                          width: 200,
-                          height: 45,
-                          decoration: BoxDecoration(
-                              color: const Color(0xff388B45),
-                              borderRadius: BorderRadius.circular(10),
-                              border:
-                                  Border.all(color: Colors.white, width: 1)),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 7),
-                            child: Row(
-                              children: [
-                                const Text(
-                                  ' צור קשר עם שירות הלקוחות',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 13),
-                                ),
-                                const Spacer(),
-                                Image.asset(
-                                  '${Constants.imagePath}/wechat_logo.png',
-                                  width: 25,
-                                  height: 25,
-                                )
-                              ],
+                        ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xff388B45),
+                            foregroundColor: Colors.white, // צבע הטקסט
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(8), // פינות מעוגלות
+                              side: const BorderSide(
+                                  color: Colors.white, width: 2), // גבול לבן
                             ),
                           ),
+                          onPressed: () {
+                            // openWhatsApp('09974663117');
+                          },
+                          iconAlignment: IconAlignment.end,
+                          label: const Text(' צור קשר עם שירות הלקוחות'),
+                          icon: Image.asset(
+                            '${Constants.imagePath}/wechat_logo.png',
+                            width: 25,
+                            height: 25,
+                          ),
                         ),
+
                         const SizedBox(height: 20), // Spacing for countdown
                       ],
                     );

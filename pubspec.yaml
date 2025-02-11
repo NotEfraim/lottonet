@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   loading_animation_widget:
+  url_launcher: ^6.2.4 
   intl: ^0.18.0
   fluttertoast: ^8.2.10
   shared_preferences: ^2.0.15

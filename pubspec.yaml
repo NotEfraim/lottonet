@@ -85,6 +85,7 @@ flutter:
     - assets/images/wechat_logo.png
     - assets/images/right_arrow.png
     - assets/images/left_arrow.png
+    - assets/images/profile_image.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

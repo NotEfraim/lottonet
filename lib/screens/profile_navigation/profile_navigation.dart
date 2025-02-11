@@ -18,34 +18,36 @@ class ProfileNavigation extends StatelessWidget {
     context.pushRemoveAll(Routes.login);
   }
 
-  Widget buildNavigation(String text) {
+  Widget buildNavigation(String text, {Function()? onClick}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 3),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: Image.asset(
+      child: GestureDetector(
+        onTap: () {
+          if (onClick != null) onClick();
+        },
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Image.asset(
                   '${Constants.imagePath}/left_arrow.png',
                   height: 35,
                   width: 25,
                 ),
-              ),
-              const Spacer(),
-              Text(
-                text,
-                style: const TextStyle(color: Colors.white),
-              )
-            ],
-          ),
-          const Divider(
-            height: 1,
-            thickness: 1,
-            color: Colors.white,
-          )
-        ],
+                const Spacer(),
+                Text(
+                  text,
+                  style: const TextStyle(color: Colors.white),
+                )
+              ],
+            ),
+            const Divider(
+              height: 1,
+              thickness: 1,
+              color: Colors.white,
+            )
+          ],
+        ),
       ),
     );
   }
@@ -54,29 +56,32 @@ class ProfileNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     final baseSize = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(36, 13, 83, 0.88),
-      body: Column(
-        children: [
-          CommonAppBar(
-            title: "אזור אישי",
-            backgroundColor: Colors.transparent,
-            rightIcon: IconButton(
-                onPressed: () {
-                  context.popBackStack();
-                },
-                icon: Image.asset(
-                  '${Constants.imagePath}/right_arrow.png',
-                  height: 35,
-                  width: 25,
-                )),
-          ),
-          SizedBox(
+        backgroundColor: const Color.fromRGBO(36, 13, 83, 0.88),
+        appBar: PreferredSize(
+            preferredSize: const Size(40, 40),
+            child: CommonAppBar(
+              title: "אזור אישי",
+              backgroundColor: Colors.transparent,
+              rightIcon: IconButton(
+                  onPressed: () {
+                    context.popBackStack();
+                  },
+                  icon: Image.asset(
+                    '${Constants.imagePath}/right_arrow.png',
+                    height: 35,
+                    width: 25,
+                  )),
+            )),
+        body: Center(
+          child: SizedBox(
             width: baseSize.width * .9,
             height: baseSize.height * 0.7,
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  buildNavigation('נתונים אישיים'),
+                  buildNavigation('נתונים אישיים', onClick: () {
+                    context.navigate(Routes.personalData);
+                  }),
                   buildNavigation('אמצעי תשלום'),
                   buildNavigation('משיכת יתרה'),
                   buildNavigation('הפקדת כסף ליתרה'),
@@ -94,8 +99,6 @@ class ProfileNavigation extends StatelessWidget {
               ),
             ),
           ),
-        ],
-      ),
-    );
+        ));
   }
 }

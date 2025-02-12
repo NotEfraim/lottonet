@@ -5,13 +5,14 @@ part 'get_customer_data_response.g.dart';
 
 @JsonSerializable()
 class GetCustomerDataResponse extends BaseResponse {
-  final String? firstName;
-  final String? lastName;
+  final String? fullName;
   final String? custId;
   final String? mobile;
   final int? age;
-  GetCustomerDataResponse(super.message, super.result, this.firstName,
-      this.lastName, this.custId, this.mobile, this.age);
+  final int? balance;
+  final String? email;
+  GetCustomerDataResponse(super.message, super.result, this.fullName,
+      this.custId, this.mobile, this.age, this.balance, this.email);
 
   factory GetCustomerDataResponse.fromJson(Map<String, dynamic> json) =>
       _$GetCustomerDataResponseFromJson(json);

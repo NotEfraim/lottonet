@@ -7,7 +7,8 @@ import 'package:lottonet/blocs/loading/loading_state.dart';
 import 'package:lottonet/blocs/login_with_otp/login_otp_bloc.dart';
 import 'package:lottonet/blocs/login_with_password/login_password_bloc.dart';
 import 'package:lottonet/blocs/main_screen/main_screen_bloc.dart';
-import 'package:lottonet/blocs/profile/get_customer_data_bloc.dart';
+import 'package:lottonet/blocs/profile/get_customer/get_customer_data_bloc.dart';
+import 'package:lottonet/blocs/profile/update_customer/update_customer_bloc.dart';
 import 'package:lottonet/blocs/register/register_bloc.dart';
 import 'package:lottonet/repositories/loading/loading_repository.dart';
 import 'package:lottonet/repositories/login_otp/check_login_code_repository.dart';
@@ -15,6 +16,7 @@ import 'package:lottonet/repositories/login_otp/send_code_repository.dart';
 import 'package:lottonet/repositories/login_password/login_password_repository.dart';
 import 'package:lottonet/repositories/main_screen/get_main_page_repository.dart';
 import 'package:lottonet/repositories/profile/get_customer_data_repository.dart';
+import 'package:lottonet/repositories/profile/update_customer_repository.dart';
 import 'package:lottonet/repositories/register/create_user_repository.dart';
 import 'package:lottonet/screens/loading_screen/loading_screen.dart';
 import 'package:lottonet/screens/login/login_layout.dart';
@@ -26,7 +28,6 @@ import 'package:lottonet/screens/register/register_layout.dart';
 import 'package:lottonet/utils/routes.dart';
 
 String activeToken = '';
-String currentBalance = '';
 
 void main() {
   runApp(const MyApp());
@@ -60,6 +61,11 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => GetCustomerDataBloc(
             GetCustomerDataRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => UpdateCustomerBloc(
+            UpdateCustomerRepository(),
           ),
         )
       ],

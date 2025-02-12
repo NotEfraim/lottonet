@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:lottonet/utils/constants.dart';
 
 class RoundedTextField extends StatefulWidget {
+  final TextEditingController? controller;
   final String hintText;
   final bool obscureText;
   final bool isError;
@@ -14,6 +15,7 @@ class RoundedTextField extends StatefulWidget {
       {super.key,
       required this.onTextChange,
       required this.isDigitOnly,
+      this.controller,
       this.focusNode});
 
   @override
@@ -44,6 +46,7 @@ class _RoundedTextFieldState extends State<RoundedTextField> {
             Expanded(
               flex: 8,
               child: TextField(
+                controller: widget.controller,
                 focusNode: widget.focusNode,
                 keyboardType: widget.isDigitOnly
                     ? TextInputType.number

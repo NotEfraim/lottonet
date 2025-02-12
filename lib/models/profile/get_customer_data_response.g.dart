@@ -11,11 +11,12 @@ GetCustomerDataResponse _$GetCustomerDataResponseFromJson(
     GetCustomerDataResponse(
       json['message'] as String?,
       (json['result'] as num?)?.toInt(),
-      json['firstName'] as String?,
-      json['lastName'] as String?,
+      json['fullName'] as String?,
       json['custId'] as String?,
       json['mobile'] as String?,
       (json['age'] as num?)?.toInt(),
+      (json['balance'] as num?)?.toInt(),
+      json['email'] as String?,
     );
 
 Map<String, dynamic> _$GetCustomerDataResponseToJson(
@@ -23,9 +24,10 @@ Map<String, dynamic> _$GetCustomerDataResponseToJson(
     <String, dynamic>{
       'result': instance.result,
       'message': instance.message,
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
+      'fullName': instance.fullName,
       'custId': instance.custId,
       'mobile': instance.mobile,
       'age': instance.age,
+      'balance': instance.balance,
+      'email': instance.email,
     };

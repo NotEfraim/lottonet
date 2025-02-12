@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottonet/blocs/loading/loading_bloc.dart';
 import 'package:lottonet/blocs/loading/loading_event.dart';
-import 'package:lottonet/blocs/profile/get_customer_data_bloc.dart';
-import 'package:lottonet/blocs/profile/get_customer_event.dart';
-import 'package:lottonet/blocs/profile/get_customer_state.dart';
-import 'package:lottonet/main.dart';
+import 'package:lottonet/blocs/profile/get_customer/get_customer_data_bloc.dart';
+import 'package:lottonet/blocs/profile/get_customer/get_customer_event.dart';
+import 'package:lottonet/blocs/profile/get_customer/get_customer_state.dart';
+import 'package:lottonet/blocs/profile/update_customer/update_customer_bloc.dart';
+import 'package:lottonet/blocs/profile/update_customer/update_customer_event.dart';
+import 'package:lottonet/blocs/profile/update_customer/update_customer_state.dart';
+import 'package:lottonet/models/profile/get_customer_data_response.dart';
+import 'package:lottonet/models/profile/update_customer_param.dart';
 import 'package:lottonet/screens/login/widget/rounded_text_field.dart';
 import 'package:lottonet/screens/widget_utils/common_app_bar.dart';
 import 'package:lottonet/screens/widget_utils/widget_exrensions.dart';
@@ -20,7 +24,14 @@ class PersonalData extends StatefulWidget {
 }
 
 class _PersonalDataState extends State<PersonalData> {
+  final _controller = List.generate(5, (index) => TextEditingController());
   bool showDim = false;
+  bool showButton = false;
+  String emailTxt = '';
+  String fullNameTxt = '';
+  String ageTxt = '';
+  String custIdTxt = '';
+  String mobileTxt = '';
 
   Widget buildMenuItem(String text, Function() onClick) {
     return SizedBox(
@@ -42,12 +53,23 @@ class _PersonalDataState extends State<PersonalData> {
     );
   }
 
+  bool validateButton(GetCustomerDataResponse? data) {
+    return emailTxt != '${data?.email}' ||
+        fullNameTxt != '${data?.fullName}' ||
+        ageTxt != '${data?.age}' ||
+        custIdTxt != '${data?.custId}' ||
+        mobileTxt != '${data?.mobile}';
+  }
+
   Widget buildInputFields(
-      {required Size baseSize,
+      {required TextEditingController controller,
+      required GetCustomerState state,
+      required Size baseSize,
       required String label,
       required bool isError,
       required bool digitsOnly,
-      required String defaultValue}) {
+      required String defaultValue,
+      required Function(String) onChange}) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -65,7 +87,12 @@ class _PersonalDataState extends State<PersonalData> {
           width: baseSize.width * .9,
           height: baseSize.height * .08,
           child: RoundedTextField(defaultValue, false, isError,
-              onTextChange: (s) {}, isDigitOnly: digitsOnly),
+              controller: controller, onTextChange: (s) {
+            onChange(s);
+            setState(() {
+              showButton = validateButton(state.response);
+            });
+          }, isDigitOnly: digitsOnly),
         )
       ],
     );
@@ -164,7 +191,9 @@ class _PersonalDataState extends State<PersonalData> {
 
   @override
   Widget build(BuildContext context) {
+    final getCustomerDataBloc = context.read<GetCustomerDataBloc>();
     final loadingBloc = context.read<LoadingBloc>();
+    final updateCustomerBloc = context.read<UpdateCustomerBloc>();
     final baseSize = MediaQuery.of(context).size;
     return BlocConsumer<GetCustomerDataBloc, GetCustomerState>(
       builder: (context, state) {
@@ -200,45 +229,116 @@ class _PersonalDataState extends State<PersonalData> {
                             width: baseSize.width * .4,
                           ),
                           buildInputFields(
+                              controller: _controller[0],
+                              state: state,
+                              baseSize: baseSize,
+                              label: 'דואר אלקטרוני:',
+                              isError: false,
+                              digitsOnly: false,
+                              defaultValue: state.response?.email ?? '',
+                              onChange: (s) {
+                                emailTxt = s;
+                                if (s.isEmpty) {
+                                  emailTxt = '${state.response?.email}';
+                                }
+                              }),
+                          buildInputFields(
+                              controller: _controller[1],
+                              state: state,
                               baseSize: baseSize,
                               label: 'שם מלא:',
                               isError: false,
                               digitsOnly: false,
-                              defaultValue: state.response?.firstName ?? ''),
+                              defaultValue: state.response?.fullName ?? '',
+                              onChange: (s) {
+                                fullNameTxt = s;
+                                if (s.isEmpty) {
+                                  fullNameTxt = '${state.response?.fullName}';
+                                }
+                              }),
                           buildInputFields(
-                              baseSize: baseSize,
-                              label: 'שם משפחה:',
-                              isError: false,
-                              digitsOnly: false,
-                              defaultValue: state.response?.lastName ?? ''),
-                          buildInputFields(
+                              controller: _controller[2],
+                              state: state,
                               baseSize: baseSize,
                               label: 'גיל:',
                               isError: false,
-                              digitsOnly: false,
+                              digitsOnly: true,
                               defaultValue:
-                                  state.response?.age.toString() ?? ''),
+                                  state.response?.age.toString() ?? '',
+                              onChange: (s) {
+                                ageTxt = s;
+                                if (s.isEmpty) {
+                                  ageTxt = '${state.response?.age}';
+                                }
+                              }),
                           buildInputFields(
+                              controller: _controller[3],
+                              state: state,
                               baseSize: baseSize,
                               label: 'טלפון נייד:',
                               isError: false,
-                              digitsOnly: false,
-                              defaultValue: state.response?.mobile ?? ''),
+                              digitsOnly: true,
+                              defaultValue: state.response?.mobile ?? '',
+                              onChange: (s) {
+                                mobileTxt = s;
+                                if (s.isEmpty) {
+                                  mobileTxt = '${state.response?.mobile}';
+                                }
+                              }),
                           buildInputFields(
+                              controller: _controller[4],
+                              state: state,
                               baseSize: baseSize,
                               label: 'תעודת זהות:',
                               isError: false,
-                              digitsOnly: false,
-                              defaultValue: state.response?.custId ?? ''),
+                              digitsOnly: true,
+                              defaultValue: state.response?.custId ?? '',
+                              onChange: (s) {
+                                custIdTxt = s;
+                                if (s.isEmpty) {
+                                  custIdTxt = '${state.response?.custId}';
+                                }
+                              }),
                           const SizedBox(
-                            height: 20,
+                            height: 10,
                           ),
-                          commonRoundedButton(
+                          if (showButton)
+                            commonRoundedButton(
                               width: baseSize.width * .4,
                               backgroundColor: const Color(0xffC71D26),
                               textColor: Colors.white,
                               text: 'בצע תשלום',
-                              onClick: () {})
+                              onClick: () {
+                                loadingBloc.add(LoadingEventShow());
+                                updateCustomerBloc.add(
+                                  UpdateCustomerEvent(
+                                    UpdateCustomerParam(
+                                        fullName: fullNameTxt,
+                                        custId: custIdTxt,
+                                        mobile: mobileTxt,
+                                        age: int.parse(ageTxt),
+                                        email: emailTxt),
+                                  ),
+                                );
+                              },
+                            ),
+                          BlocConsumer<UpdateCustomerBloc, UpdateCustomerState>(
+                            builder: (context, state) {
+                              return const SizedBox.shrink();
+                            },
+                            listener: (context, state) {
+                              if (state.isLoading == false) {
+                                loadingBloc.add(LoadingEventHide());
+                              }
+                              if (state.response?.result == 0) {
+                                for (var c in _controller) {
+                                  c.clear();
+                                }
+                                loadingBloc.add(LoadingEventShow());
+                                getCustomerDataBloc.add(GetCustomerEvent());
+                              }
+                            },
+                          )
                         ],
                       ),
                     ),
@@ -246,7 +346,7 @@ class _PersonalDataState extends State<PersonalData> {
                 ),
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: buildBalance(currentBalance),
+                  child: buildBalance(state.response?.balance.toString() ?? ''),
                 )
               ],
             ),
@@ -255,6 +355,13 @@ class _PersonalDataState extends State<PersonalData> {
       },
       listener: (context, state) {
         if (state.isLoading == false) loadingBloc.add(LoadingEventHide());
+
+        final data = state.response;
+        emailTxt = '${data?.email}';
+        fullNameTxt = '${data?.fullName}';
+        ageTxt = '${data?.age}';
+        custIdTxt = '${data?.custId}';
+        mobileTxt = '${data?.mobile}';
       },
     );
   }

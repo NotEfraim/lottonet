@@ -8,10 +8,13 @@ import 'package:lottonet/models/login_password/login_password_param.dart';
 import 'package:lottonet/models/login_password/login_password_response.dart';
 import 'package:lottonet/models/main_sreen/main_screen_response.dart';
 import 'package:lottonet/models/profile/get_customer_data_response.dart';
+import 'package:lottonet/models/profile/update_customer_param.dart';
+import 'package:lottonet/models/profile/update_customer_response.dart';
 import 'package:lottonet/models/register/register_user_param.dart';
 import 'package:lottonet/models/register/register_user_response.dart';
 import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/http.dart';
+import 'package:retrofit/retrofit.dart';
 
 part 'rest_client.g.dart';
 
@@ -41,4 +44,8 @@ abstract class RestClient {
 
   @POST("/getCustomer")
   Future<GetCustomerDataResponse> getCustomerData();
+
+  @POST("/updateCustomer")
+  Future<UpdateCustomerResponse> updateCustomer(
+      @Body() UpdateCustomerParam param);
 }

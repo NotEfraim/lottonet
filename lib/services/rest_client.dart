@@ -1,4 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:lottonet/models/banking/add_card/charge_credit_card_param.dart';
+import 'package:lottonet/models/banking/add_card/charge_credit_card_response.dart';
+import 'package:lottonet/models/banking/charge_card/charge_existing_card_param.dart';
+import 'package:lottonet/models/banking/charge_card/charge_existing_card_response.dart';
+import 'package:lottonet/models/banking/get_card/get_credit_cards_response.dart';
 import 'package:lottonet/models/loading/loading_response.dart';
 import 'package:lottonet/models/login_otp/check_login_code/check_login_code_param.dart';
 import 'package:lottonet/models/login_otp/check_login_code/check_login_code_response.dart';
@@ -48,4 +53,15 @@ abstract class RestClient {
   @POST("/updateCustomer")
   Future<UpdateCustomerResponse> updateCustomer(
       @Body() UpdateCustomerParam param);
+
+  @POST("/getCreditCardLastDigits")
+  Future<GetCreditCardsResponse> getCreditCards();
+
+  @POST("chargeCreditCard")
+  Future<ChargeCreditCardResponse> chargeCreditCards(
+      @Body() ChargeCreditCardParam param);
+
+  @POST("chargeExistingCreditCard")
+  Future<ChargeExistingCardResponse> chargeExistingCard(
+      @Body() ChargeExistingCardParam param);
 }

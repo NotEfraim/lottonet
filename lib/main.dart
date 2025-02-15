@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:lottonet/blocs/banking/banking_bloc.dart';
 import 'package:lottonet/blocs/input_otp/input_otp_bloc.dart';
 import 'package:lottonet/blocs/loading/loading_bloc.dart';
 import 'package:lottonet/blocs/loading/loading_state.dart';
@@ -10,6 +11,7 @@ import 'package:lottonet/blocs/main_screen/main_screen_bloc.dart';
 import 'package:lottonet/blocs/profile/get_customer/get_customer_data_bloc.dart';
 import 'package:lottonet/blocs/profile/update_customer/update_customer_bloc.dart';
 import 'package:lottonet/blocs/register/register_bloc.dart';
+import 'package:lottonet/repositories/banking/banking_repository.dart';
 import 'package:lottonet/repositories/loading/loading_repository.dart';
 import 'package:lottonet/repositories/login_otp/check_login_code_repository.dart';
 import 'package:lottonet/repositories/login_otp/send_code_repository.dart';
@@ -18,7 +20,7 @@ import 'package:lottonet/repositories/main_screen/get_main_page_repository.dart'
 import 'package:lottonet/repositories/profile/get_customer_data_repository.dart';
 import 'package:lottonet/repositories/profile/update_customer_repository.dart';
 import 'package:lottonet/repositories/register/create_user_repository.dart';
-import 'package:lottonet/screens/loading_screen/loading_screen.dart';
+import 'package:lottonet/screens/bank/banking_widget.dart';
 import 'package:lottonet/screens/login/login_layout.dart';
 import 'package:lottonet/screens/login/widget/with_otp/input_otp.dart';
 import 'package:lottonet/screens/main_screen/main_screen.dart';
@@ -66,6 +68,11 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => UpdateCustomerBloc(
             UpdateCustomerRepository(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => BankingBloc(
+            BankingRepository(),
           ),
         )
       ],

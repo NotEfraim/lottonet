@@ -4,19 +4,29 @@ import 'package:lottonet/utils/constants.dart';
 
 class RoundedTextField extends StatefulWidget {
   final TextEditingController? controller;
+  final int? maxLength;
+  final double? height;
+  final double? width;
   final String hintText;
   final bool obscureText;
   final bool isError;
   final bool isDigitOnly;
   final FocusNode? focusNode;
+  final double? cornderRadius;
+  final EdgeInsets? textPadding;
   final Function(String) onTextChange;
 
   const RoundedTextField(this.hintText, this.obscureText, this.isError,
       {super.key,
+      this.maxLength,
+      this.height,
+      this.width,
       required this.onTextChange,
       required this.isDigitOnly,
       this.controller,
-      this.focusNode});
+      this.focusNode,
+      this.cornderRadius,
+      this.textPadding});
 
   @override
   State<StatefulWidget> createState() => _RoundedTextFieldState();
@@ -31,6 +41,8 @@ class _RoundedTextFieldState extends State<RoundedTextField> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Container(
+        width: widget.width,
+        height: widget.height,
         decoration: BoxDecoration(
             border: Border.all(
                 color: widget.isError ? Colors.red : Colors.transparent,
@@ -38,7 +50,7 @@ class _RoundedTextFieldState extends State<RoundedTextField> {
             color: widget.isError
                 ? const Color.fromARGB(255, 241, 223, 223)
                 : Colors.white,
-            borderRadius: BorderRadius.circular(30)),
+            borderRadius: BorderRadius.circular(widget.cornderRadius ?? 30)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -46,6 +58,7 @@ class _RoundedTextFieldState extends State<RoundedTextField> {
             Expanded(
               flex: 8,
               child: TextField(
+                maxLength: widget.maxLength,
                 controller: widget.controller,
                 focusNode: widget.focusNode,
                 keyboardType: widget.isDigitOnly
@@ -57,7 +70,9 @@ class _RoundedTextFieldState extends State<RoundedTextField> {
                 onChanged: (value) => widget.onTextChange(value),
                 obscureText: isShow,
                 decoration: InputDecoration(
+                  counterText: '',
                   hintText: widget.hintText,
+                  hintStyle: const TextStyle(fontSize: 12),
                   filled: true,
                   fillColor:
                       Colors.transparent, // Ensure the fill color is consistent
@@ -65,10 +80,10 @@ class _RoundedTextFieldState extends State<RoundedTextField> {
                     borderRadius: BorderRadius.circular(30),
                     borderSide: BorderSide.none,
                   ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    vertical: 15,
-                    horizontal: 20,
-                  ),
+                  contentPadding: widget.textPadding ??
+                      const EdgeInsets.symmetric(
+                        horizontal: 20,
+                      ),
                 ),
               ),
             ),

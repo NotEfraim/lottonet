@@ -87,7 +87,7 @@ class MyApp extends StatelessWidget {
           Routes.mainScreen: (context) => const MainScreen(),
           Routes.inputOtp: (context) => const InputOtp(),
           Routes.profileNavigation: (context) => const ProfileNavigation(),
-          Routes.personalData: (context) => const PaymentScreen()
+          Routes.personalData: (context) => const PersonalData()
         },
         builder: (context, child) {
           return Stack(

@@ -20,7 +20,8 @@ import 'package:lottonet/repositories/main_screen/get_main_page_repository.dart'
 import 'package:lottonet/repositories/profile/get_customer_data_repository.dart';
 import 'package:lottonet/repositories/profile/update_customer_repository.dart';
 import 'package:lottonet/repositories/register/create_user_repository.dart';
-import 'package:lottonet/screens/bank/banking_widget.dart';
+import 'package:lottonet/screens/bank/payment_screen.dart';
+import 'package:lottonet/screens/loading_screen/loading_screen.dart';
 import 'package:lottonet/screens/login/login_layout.dart';
 import 'package:lottonet/screens/login/widget/with_otp/input_otp.dart';
 import 'package:lottonet/screens/main_screen/main_screen.dart';
@@ -80,7 +81,7 @@ class MyApp extends StatelessWidget {
         title: "Lotto Net",
         initialRoute: Routes.loadingScreen,
         routes: {
-          Routes.loadingScreen: (context) => const LoadingScreen(),
+          Routes.loadingScreen: (context) => const PaymentScreen(),
           Routes.login: (context) => const LoginLayout(),
           Routes.register: (context) => const RegisterLayout(),
           Routes.mainScreen: (context) => const MainScreen(),

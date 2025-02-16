@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottonet/blocs/banking/banking_bloc.dart';
+import 'package:lottonet/blocs/banking/banking_state.dart';
 import 'package:lottonet/screens/bank/banking_widget.dart';
 import 'package:lottonet/screens/login/widget/rounded_text_field.dart';
 import 'package:lottonet/screens/widget_utils/common_app_bar.dart';
@@ -6,8 +9,22 @@ import 'package:lottonet/utils/color_utils.dart';
 import 'package:lottonet/utils/constants.dart';
 import 'package:lottonet/utils/navigation_ext.dart';
 
-class PaymentScreen extends StatelessWidget {
+class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
+
+  @override
+  State createState() => PaymentScreenState();
+}
+
+class PaymentScreenState extends State<PaymentScreen> {
+  int selectedPaymentTab = 0;
+  String cardName = '';
+  String cardNumber = '';
+  String year = '';
+  String month = '';
+  String cvv = '';
+  bool saveCard = false;
+  String lastFourDigit = '';
 
   Widget headerItem(Size baseSize, String text,
       {required Function() onPressed}) {
@@ -135,51 +152,58 @@ class PaymentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final baseSize = MediaQuery.of(context).size;
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Container(
-        color: backgroundPurple,
-        child: SafeArea(
-            child: Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: PreferredSize(
-            preferredSize: const Size(40, 40),
-            child: CommonAppBar(
-              title: "אישור תשלום",
+    return BlocConsumer<BankingBloc, BankingState>(
+      builder: (context, state) {
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: Container(
+            color: backgroundPurple,
+            child: SafeArea(
+                child: Scaffold(
               backgroundColor: Colors.transparent,
-              leftIcon: IconButton(
-                  onPressed: () {
-                    context.popBackStack();
-                  },
-                  icon: Image.asset(
-                    '${Constants.imagePath}/right_arrow.png',
-                    height: 35,
-                    width: 25,
-                  )),
-            ),
+              appBar: PreferredSize(
+                preferredSize: const Size(40, 40),
+                child: CommonAppBar(
+                  title: "אישור תשלום",
+                  backgroundColor: Colors.transparent,
+                  leftIcon: IconButton(
+                      onPressed: () {
+                        context.popBackStack();
+                      },
+                      icon: Image.asset(
+                        '${Constants.imagePath}/right_arrow.png',
+                        height: 35,
+                        width: 25,
+                      )),
+                ),
+              ),
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: baseSize.height * .03),
+                    headerItem(baseSize, "טבלאות :", onPressed: () {}),
+                    SizedBox(height: baseSize.height * .01),
+                    headerItem(baseSize, "לתשלום:", onPressed: () {}),
+                    SizedBox(height: baseSize.height * .02),
+                    redeemVoucherWidget(baseSize),
+                    SizedBox(height: baseSize.height * .01),
+                    buildChoosePayment(baseSize),
+                    SizedBox(height: baseSize.height * .01),
+                    SizedBox(
+                      width: baseSize.width,
+                      height: baseSize.height * .6,
+                      child: const BankingWidget(
+                        amount: "100",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )),
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(height: baseSize.height * .03),
-                headerItem(baseSize, "טבלאות :", onPressed: () {}),
-                SizedBox(height: baseSize.height * .01),
-                headerItem(baseSize, "לתשלום:", onPressed: () {}),
-                SizedBox(height: baseSize.height * .02),
-                redeemVoucherWidget(baseSize),
-                SizedBox(height: baseSize.height * .01),
-                buildChoosePayment(baseSize),
-                SizedBox(height: baseSize.height * .01),
-                SizedBox(
-                  width: baseSize.width * .9,
-                  height: baseSize.height * .6,
-                  child: const BankingWidget(),
-                )
-              ],
-            ),
-          ),
-        )),
-      ),
+        );
+      },
+      listener: (context, state) {},
     );
   }
 }

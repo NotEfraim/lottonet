@@ -81,13 +81,13 @@ class MyApp extends StatelessWidget {
         title: "Lotto Net",
         initialRoute: Routes.loadingScreen,
         routes: {
-          Routes.loadingScreen: (context) => const PaymentScreen(),
+          Routes.loadingScreen: (context) => const LoadingScreen(),
           Routes.login: (context) => const LoginLayout(),
           Routes.register: (context) => const RegisterLayout(),
           Routes.mainScreen: (context) => const MainScreen(),
           Routes.inputOtp: (context) => const InputOtp(),
           Routes.profileNavigation: (context) => const ProfileNavigation(),
-          Routes.personalData: (context) => const PersonalData()
+          Routes.personalData: (context) => const PaymentScreen()
         },
         builder: (context, child) {
           return Stack(

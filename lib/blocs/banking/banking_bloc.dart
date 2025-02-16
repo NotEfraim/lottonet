@@ -28,6 +28,9 @@ class BankingBloc extends Bloc<BaseEvent, BankingState> {
               await bankingRepository.chargeCreditCards(event.param);
           emit(state.copyWith(
               isLoading: false, chargeCreditCardResponse: response));
+          if (response.result == 0) {
+            add(GetCrediCardsEvent());
+          }
         } catch (e) {
           emit(
               state.copyWith(isLoading: false, chargeCreditCardResponse: null));

@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottonet/blocs/banking/banking_bloc.dart';
+import 'package:lottonet/blocs/banking/banking_event.dart';
+import 'package:lottonet/blocs/banking/banking_state.dart';
+import 'package:lottonet/blocs/loading/loading_bloc.dart';
+import 'package:lottonet/blocs/loading/loading_event.dart';
+import 'package:lottonet/models/banking/add_card/charge_credit_card_param.dart';
+import 'package:lottonet/models/banking/charge_card/charge_existing_card_param.dart';
 import 'package:lottonet/screens/login/widget/rounded_text_field.dart';
 import 'package:lottonet/screens/widget_utils/widget_exrensions.dart';
 import 'package:lottonet/utils/color_utils.dart';
+import 'package:lottonet/utils/constants.dart';
+import 'package:lottonet/utils/extensions.dart';
 
 class BankingWidget extends StatefulWidget {
-  const BankingWidget({super.key});
+  final String amount;
+  const BankingWidget({super.key, required this.amount});
 
   @override
   State createState() => _BankingWidgetState();
@@ -48,9 +59,14 @@ Color getColor(Set<WidgetState> states) {
 class _BankingWidgetState extends State<BankingWidget> {
   int currentYear = DateTime.now().year;
   int selectedIndex = 0;
+  int selectedCardIndex = 0;
   bool isChecked = false;
+  String cardName = '';
+  String cardNumber = '';
   int selectedMonth = 1;
   int selectedYear = 2025;
+  String cvv = '';
+  String lastFourDigit = '';
 
   Color getTabColor(int index) {
     return (selectedIndex == index)
@@ -58,7 +74,7 @@ class _BankingWidgetState extends State<BankingWidget> {
         : Colors.white.withAlpha(40);
   }
 
-  Widget yearDropDown(Size BaseSize) {
+  Widget yearDropDown(Size baseSize) {
     return DropdownButtonHideUnderline(
       child: DropdownButton<int>(
         value: selectedYear,
@@ -87,7 +103,6 @@ class _BankingWidgetState extends State<BankingWidget> {
   }
 
   Widget monthDropDown(Size baseSize) {
-    int selectedMonth = DateTime.now().month; // Default: Current Month
     return DropdownButtonHideUnderline(
       child: DropdownButton<int>(
         value: selectedMonth,
@@ -174,16 +189,14 @@ class _BankingWidgetState extends State<BankingWidget> {
         ),
         RoundedTextField('השם בכרטיס', false, false,
             textPadding: const EdgeInsets.symmetric(horizontal: 10),
-            height: baseSize.height * .06,
-            onTextChange: (s) {},
-            cornderRadius: 0,
-            isDigitOnly: false),
+            height: baseSize.height * .06, onTextChange: (s) {
+          cardName = s;
+        }, cornderRadius: 0, isDigitOnly: false),
         RoundedTextField('מספר כרטיס', false, false,
             textPadding: const EdgeInsets.symmetric(horizontal: 10),
-            height: baseSize.height * .06,
-            onTextChange: (s) {},
-            cornderRadius: 0,
-            isDigitOnly: false),
+            height: baseSize.height * .06, onTextChange: (s) {
+          cardNumber = s;
+        }, cornderRadius: 0, isDigitOnly: false),
         const SizedBox(
           height: 10,
         ),
@@ -224,9 +237,9 @@ class _BankingWidgetState extends State<BankingWidget> {
                   maxLength: 4,
                   height: baseSize.height * .06,
                   textPadding: const EdgeInsets.symmetric(horizontal: 10),
-                  onTextChange: (s) {},
-                  cornderRadius: 0,
-                  isDigitOnly: true),
+                  onTextChange: (s) {
+                cvv = s;
+              }, cornderRadius: 0, isDigitOnly: true),
             ),
           ],
         ),
@@ -243,65 +256,183 @@ class _BankingWidgetState extends State<BankingWidget> {
             },
           ),
         ),
-        const SizedBox(
-          height: 20,
-        ),
       ],
     );
   }
 
   Widget buildDisplayCard(Size baseSize) {
-    return Column(children: [
-      SizedBox(
-        width: baseSize.width,
-        child: const Text(
-          "בחר כרטיס",
-          style: TextStyle(color: Colors.white, fontSize: 18),
+    return BlocConsumer<BankingBloc, BankingState>(
+      builder: (context, state) {
+        return Column(children: [
+          SizedBox(
+            width: baseSize.width,
+            child: const Text(
+              "בחר כרטיס",
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: List.generate(
+                  state.getCreditCardsResponse?.data.length ?? 0, (index) {
+                return buildDisplayBankItem(
+                    selectedCardIndex == index,
+                    state.getCreditCardsResponse?.data[index].lastFourDigits ??
+                        '', (s) {
+                  setState(() {
+                    selectedCardIndex = index;
+                  });
+                  lastFourDigit = s;
+                });
+              }))
+        ]);
+      },
+      listener: (context, state) {},
+    );
+  }
+
+  Widget buildDisplayBankItem(
+      bool isActive, String lastFourDigit, Function(String) onTap) {
+    final backgroundColor = isActive ? Colors.white : fadedWhite;
+    final textColor = isActive ? primaryPurple : Colors.white;
+    final radioButton = isActive ? 'radio_active.png' : 'radio_inactive.png';
+
+    return GestureDetector(
+      onTap: () {
+        onTap(lastFourDigit);
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+            color: backgroundColor,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.white, width: .5)),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Image.asset(
+                '${Constants.imagePath}/$radioButton',
+                width: 20,
+                height: 20,
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: Text(
+                "$lastFourDigit **** **** **** ",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: textColor, fontSize: 16),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Image.asset(
+                '${Constants.imagePath}/delete_icon.png',
+                width: 30,
+                height: 30,
+              ),
+            ),
+          ],
         ),
       ),
-    ]);
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final bankingBloc = context.read<BankingBloc>();
+    bankingBloc.add(GetCrediCardsEvent());
   }
 
   @override
   Widget build(BuildContext context) {
+    final bankingBloc = context.read<BankingBloc>();
+    final loadingBloc = context.read<LoadingBloc>();
     final baseSize = MediaQuery.of(context).size;
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  bankTab(onTab1Pressed: () {
-                    setState(() {
-                      selectedIndex = 0;
-                    });
-                  }, onTab2Pressed: () {
-                    setState(() {
-                      selectedIndex = 1;
-                    });
-                  }),
-                  const SizedBox(height: 20),
-                  if (selectedIndex == 0)
-                    buildAddCard(baseSize)
-                  else
-                    buildDisplayCard(baseSize),
-                  commonRoundedButton(
-                    backgroundColor: const Color(0xFFC71D26),
-                    width: baseSize.width * .5,
-                    textColor: Colors.white,
-                    text: "בצע תשלום",
-                    onClick: () {},
+    return BlocConsumer<BankingBloc, BankingState>(
+      builder: (context, state) {
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: SafeArea(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      bankTab(onTab1Pressed: () {
+                        setState(() {
+                          selectedIndex = 0;
+                        });
+                      }, onTab2Pressed: () {
+                        setState(() {
+                          selectedIndex = 1;
+                        });
+                      }),
+                      if (selectedIndex == 0) ...[
+                        const SizedBox(height: 20),
+                        buildAddCard(baseSize),
+                      ] else ...[
+                        const SizedBox(height: 20),
+                        buildDisplayCard(baseSize),
+                      ],
+                      SizedBox(height: baseSize.height * .03),
+                      commonRoundedButton(
+                        backgroundColor: const Color(0xFFC71D26),
+                        width: baseSize.width * .5,
+                        textColor: Colors.white,
+                        text: "בצע תשלום",
+                        onClick: () {
+                          if (selectedIndex == 0) {
+                            bankingBloc.add(
+                              ChargeCreditCardEvent(
+                                ChargeCreditCardParam(
+                                    ownerId: '890108566',
+                                    ownerName: cardName,
+                                    ownerCreditCard: cardNumber,
+                                    month: '$selectedMonth',
+                                    year:
+                                        selectedYear.toString().substring(2, 4),
+                                    cvv: cvv,
+                                    amount: 100,
+                                    toSave: isChecked ? 1 : 0),
+                              ),
+                            );
+                          } else {
+                            bankingBloc.add(
+                              ChargeExisitingCreditCardEvent(
+                                ChargeExistingCardParam(
+                                  lastdigits: lastFourDigit,
+                                  amount: 100,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      SizedBox(height: baseSize.height * .03),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
+      listener: (context, state) {
+        if (state.isLoading == false) {
+          loadingBloc.add(LoadingEventHide());
+        } else {
+          loadingBloc.add(LoadingEventShow());
+        }
+      },
     );
   }
 }

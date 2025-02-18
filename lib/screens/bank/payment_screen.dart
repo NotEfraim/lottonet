@@ -102,7 +102,7 @@ class PaymentScreenState extends State<PaymentScreen> {
                 height: baseSize.height * .06,
                 child: const Center(
                   child: Text(
-                    "לִפְדוֹת",
+                    "הפעל",
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 )),

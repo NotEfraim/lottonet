@@ -307,7 +307,7 @@ class _PersonalDataState extends State<PersonalData> {
                               width: baseSize.width * .4,
                               backgroundColor: const Color(0xffC71D26),
                               textColor: Colors.white,
-                              text: 'בצע תשלום',
+                              text: 'עדכון',
                               onClick: () {
                                 loadingBloc.add(LoadingEventShow());
                                 updateCustomerBloc.add(

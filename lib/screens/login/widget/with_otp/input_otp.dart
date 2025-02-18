@@ -219,7 +219,7 @@ class _InputOtpState extends State<InputOtp> {
                               backgroundColor: const Color(0xFFC71D26),
                             ),
                             child: const Text(
-                              "כְּנִיסָה לַמַעֲרֶכֶת",
+                              "התחברות",
                               style: TextStyle(color: Colors.white),
                             ),
                             onPressed: () {
